@@ -26,7 +26,7 @@ namespace FCG.Inputs
         /// <summary>
         /// Obrigatório letra maiúscula, minúscula, número e caracter especial.
         /// </summary>
-        [Required]
+        [Required] 
         [MaxLength(50)]
         [MinLength(8)]
         public string Senha { get; set; }

@@ -12,7 +12,7 @@ namespace FCG.Repository
 
         public void CadastrarEmMassa()
         {
-            var _games = new List<Game>()
+            var _games = new List<Game>() 
             {
                     new Game() { Nome = "Fortnite", Descricao = "Battle royale com eventos", DataLancamento = new DateTime(2017, 07, 25), Preco = 99.00M, Produtora = "Epic Games" },
                     new Game() { Nome = "League of Legends", Descricao = "MOBA competitivo online", DataLancamento = new DateTime(2009, 10, 27), Preco = 0.00M, Produtora = "Riot Games" },

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace FCG.Controllers
 {
-    [ApiController]
+    [ApiController] 
     [Route("[controller]")]
     public class AuthController(IConfiguration configuration, IUsuarioRepository usuarioRepository, CriptografiaHelper criptografiaHelper, LoginHelper loginHelper, BaseLogger<AuthController> logger) : ControllerBase
     {

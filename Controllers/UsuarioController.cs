@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FCG.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] 
     public class UsuarioController(IUsuarioRepository usuarioRepository, CriptografiaHelper criptografiaHelper, TextoHelper textoHelper, BaseLogger<UsuarioController> Logger) : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;

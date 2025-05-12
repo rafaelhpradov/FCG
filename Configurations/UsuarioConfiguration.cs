@@ -20,4 +20,4 @@ namespace FCG.Configurations
             builder.Property(x => x.TipoUsuario).HasColumnOrder(7).HasColumnType("tinyint").IsRequired();
         }
     }
-}
+} 

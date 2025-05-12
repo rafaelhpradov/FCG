@@ -24,4 +24,4 @@ namespace FCG.Configurations
                 .HasPrincipalKey(x => x.Id);
         }
     }
-}
+} 

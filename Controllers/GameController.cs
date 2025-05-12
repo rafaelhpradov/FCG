@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FCG.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] 
     public class GameController(IGameRepository gameRepository, BaseLogger<GameController> Logger) : ControllerBase
     {
         private readonly IGameRepository _gameRepository = gameRepository;

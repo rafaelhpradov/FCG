@@ -22,7 +22,7 @@
         public virtual void LogError(string message)
         {
             _logger?.LogError($"{DateTime.Now}: {message}");
-        }
+        } 
 
         public virtual void LogDebug(string message)
         {

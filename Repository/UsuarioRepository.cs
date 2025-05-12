@@ -16,7 +16,7 @@ namespace FCG.Repository
         public static CriptografiaHelper _criptografiaHelper { get; private set; }
 
         void IUsuarioRepository.CadastrarEmMassa()
-        {
+        { 
             var _usuarios = new List<Usuario>()
             {
                 new Usuario { Nome = "Wilson", Email = "wilson.carvalhais@gmail.com", Endereco = "Rua ABC, Rio de Janeiro, RJ", Senha= _criptografiaHelper.Criptografar("@Qwe123!@#"), DataNascimento = new DateTime(1981, 06, 24), TipoUsuario = 1 },

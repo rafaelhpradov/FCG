@@ -21,7 +21,7 @@ namespace FCG.Inputs
         /// Produtora do jogo. 
         /// </summary>
         [Required]
-        [MaxLength(100)]
+        [MaxLength(100)] 
         public required string Produtora { get; set; }
 
         /// <summary>

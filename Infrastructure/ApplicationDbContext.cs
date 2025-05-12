@@ -23,7 +23,7 @@ namespace FCG.Infrastructure
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Game> Games { get; set; }
+        public DbSet<Game> Games { get; set; } 
         public DbSet<Pedido> Pedidos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

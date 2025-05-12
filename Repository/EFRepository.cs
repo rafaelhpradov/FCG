@@ -28,7 +28,7 @@ namespace FCG.Repository
 
         public void Cadastrar(T entidade)
         {
-            entidade.DataCriacao = DateTime.Now;
+            entidade.DataCriacao = DateTime.Now; 
             _dbSet.Add(entidade);
             _context.SaveChanges();
         }

@@ -73,7 +73,7 @@ internal class Program
         });
 
         #endregion
-
+         
         #region [JWT]
 
         builder.Services.AddAuthentication(options =>

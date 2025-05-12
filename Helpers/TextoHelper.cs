@@ -28,7 +28,7 @@ namespace FCG.Helpers
             return hasMinimumLength && hasUpperChar && hasLowerChar && hasNumber && hasSpecialChar;
         }
 
-        public bool TipoUsuarioValido(Int16 tipoUsuario)
+        public bool TipoUsuarioValido(Int16 tipoUsuario) 
         {
             if (tipoUsuario < 1 || tipoUsuario > 2)
                 return false;

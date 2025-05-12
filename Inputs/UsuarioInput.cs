@@ -24,7 +24,7 @@ namespace FCG.Inputs
         [Required]
         [MaxLength(50)]
         [MinLength(8)]
-        public string Senha { get; set; }
+        public string Senha { get; set; } 
 
         /// <summary>
         /// Endereço completo.

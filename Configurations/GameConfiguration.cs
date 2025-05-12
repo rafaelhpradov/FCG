@@ -19,4 +19,4 @@ namespace FCG.Configurations
             builder.Property(x => x.DataLancamento).HasColumnOrder(6).HasColumnType("date").IsRequired();
         }
     }
-}
+} 

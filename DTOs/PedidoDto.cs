@@ -10,6 +10,6 @@
         #region [Navegacao]
         public UsuarioDto Usuario { get; set; }
         public GameDto Game { get; set; }
-        #endregion
+        #endregion 
     }
 }

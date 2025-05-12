@@ -12,6 +12,6 @@
 
         #region [Navegacao]
         public ICollection<PedidoDto> Pedidos { get; set; }
-        #endregion
+        #endregion 
     }
 }

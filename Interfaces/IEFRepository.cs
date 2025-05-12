@@ -12,3 +12,4 @@ namespace FCG.Interfaces
         void Deletar(int id);
     }
 }
+ 
