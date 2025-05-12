@@ -4,6 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>$(NoWarn);1591</NoWarn><!-- evita warnings por falta de comentários -->
+	  <DocumentationFile>bin\Debug\net8.0\FCG.xml</DocumentationFile><!-- ou net6.0, net7.0 etc -->
   </PropertyGroup>
 
   <ItemGroup>

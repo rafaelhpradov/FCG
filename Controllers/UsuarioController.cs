@@ -1,5 +1,6 @@
 ﻿using FCG.DTOs;
 using FCG.Helpers;
+using FCG.Inputs;
 using FCG.Interfaces;
 using FCG.Middlewares;
 using FCG.Models;
@@ -17,81 +18,7 @@ namespace FCG.Controllers
         private readonly CriptografiaHelper _criptografiaHelper = criptografiaHelper;
         private readonly TextoHelper _textoHelper = textoHelper;
 
-        [HttpPost()]
-        public IActionResult Post([FromBody] Usuario usuario)
-        {
-            try
-            {
-                var _usuario = new Usuario()
-                {
-                    Nome = usuario.Nome,
-                    Email = usuario.Email,
-                    Senha = _criptografiaHelper.Criptografar(usuario.Senha),
-                    DataNascimento = usuario.DataNascimento,
-                    TipoUsuario = usuario.TipoUsuario
-                };
-
-                bool emailValido = _textoHelper.EmailValido(_usuario.Email);
-                bool senhaValida = _textoHelper.SenhaValida(_criptografiaHelper.Descriptografar(_usuario.Senha));
-
-                if (!emailValido)
-                {
-                    string erroResponse = "Email inválido.";
-                    _logger.LogError(erroResponse);
-                    return BadRequest(erroResponse);
-                }
-                else if (!senhaValida)
-                {
-                    string erroResponse = "Senha inválida.";
-                    _logger.LogError(erroResponse);
-                    return BadRequest(erroResponse);
-                }
-                else
-                {
-                    _usuarioRepository.Cadastrar(_usuario);
-
-                    string okResponse = $"Usuário {_usuario.Id} cadastrado com sucesso.";
-                    _logger.LogInfotmation(okResponse);
-                    return Ok(okResponse);
-                }
-            }
-            catch (Exception ex)
-            {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
-            }
-        }
-
-        [HttpPost("cadastro-em-massa")]
-        public IActionResult CadastroEmMassa()
-        {
-            try
-            {
-                _usuarioRepository.CadastrarEmMassa();
-                return Ok();
-
-                string okResponse = $"Usuários cadastrados com sucesso.";
-                _logger.LogInfotmation(okResponse);
-                return Ok(okResponse);
-            }
-            catch (Exception ex)
-            {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
-            }
-        }
+        #region [Get]
 
         [HttpGet("cadastro-todos")]
         [Authorize(Policy = "Admin")]
@@ -248,24 +175,143 @@ namespace FCG.Controllers
             }
         }
 
-        [HttpPut]
-        [Authorize(Policy = "Admin")]
-        public IActionResult Put([FromBody] Usuario usuario)
+        #endregion
+
+        #region [Post]
+
+        [HttpPost()]
+        public IActionResult Post([FromBody] UsuarioInput usuarioInput)
         {
             try
             {
-                var _usuario = _usuarioRepository.ObterPorID(usuario.Id);
+                var _usuario = new Usuario()
                 {
-                    _usuario.Nome = usuario.Nome;
-                    _usuario.Email = usuario.Email;
-                    _usuario.DataNascimento = usuario.DataNascimento;
-                }
-                ;
-                _usuarioRepository.Alterar(_usuario);
+                    Nome = usuarioInput.Nome,
+                    Email = usuarioInput.Email,
+                    Senha = _criptografiaHelper.Criptografar(usuarioInput.Senha),
+                    DataNascimento = usuarioInput.DataNascimento,
+                    Endereco = usuarioInput.Endereco,
+                    TipoUsuario = usuarioInput.TipoUsuario
+                };
 
-                string okResponse = $"Usuário {usuario.Id} alterado com sucesso.";
+                bool emailValido = _textoHelper.EmailValido(_usuario.Email);
+                bool senhaValida = _textoHelper.SenhaValida(_criptografiaHelper.Descriptografar(_usuario.Senha));
+                bool tipoUsuarioValido = _textoHelper.TipoUsuarioValido(_usuario.TipoUsuario);
+
+                if (!emailValido)
+                {
+                    string erroResponse = "Email inválido.";
+                    _logger.LogError(erroResponse);
+                    return BadRequest(erroResponse);
+                }
+                else if (!senhaValida)
+                {
+                    string erroResponse = "Senha inválida.";
+                    _logger.LogError(erroResponse);
+                    return BadRequest(erroResponse);
+                }
+                else if (!tipoUsuarioValido)
+                {
+                    string erroResponse = "Tipo de usuário inválida.";
+                    _logger.LogError(erroResponse);
+                    return BadRequest(erroResponse);
+                }
+                else
+                {
+                    _usuarioRepository.Cadastrar(_usuario);
+
+                    string okResponse = $"Usuário {_usuario.Id} cadastrado com sucesso.";
+                    _logger.LogInfotmation(okResponse);
+                    return Ok(okResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                var erroResponse = new ErroResponse
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Erro = "Bad Request",
+                    Detalhe = ex.Message
+                };
+                _logger.LogError(erroResponse.ToString());
+                return BadRequest(erroResponse);
+            }
+        }
+
+        [HttpPost("cadastro-em-massa")]
+        public IActionResult CadastroEmMassa()
+        {
+            try
+            {
+                _usuarioRepository.CadastrarEmMassa();
+                return Ok();
+
+                string okResponse = $"Usuários cadastrados com sucesso.";
                 _logger.LogInfotmation(okResponse);
                 return Ok(okResponse);
+            }
+            catch (Exception ex)
+            {
+                var erroResponse = new ErroResponse
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Erro = "Bad Request",
+                    Detalhe = ex.Message
+                };
+                _logger.LogError(erroResponse.ToString());
+                return BadRequest(erroResponse);
+            }
+        }
+
+        #endregion
+
+        #region [Put Detete]
+
+        [HttpPut]
+        [Authorize(Policy = "Admin")]
+        public IActionResult Put([FromBody] UsuarioUpdateInput usuarioInput)
+        {
+            try
+            {
+                var _usuario = _usuarioRepository.ObterPorID(usuarioInput.Id);
+                {
+                    _usuario.Nome = usuarioInput.Nome;
+                    _usuario.Email = usuarioInput.Email;
+                    _usuario.Senha = _criptografiaHelper.Criptografar(usuarioInput.Senha);
+                    _usuario.DataNascimento = usuarioInput.DataNascimento;
+                    _usuario.TipoUsuario = usuarioInput.TipoUsuario;
+                };
+
+                bool emailValido = _textoHelper.EmailValido(_usuario.Email);
+                bool senhaValida = _textoHelper.SenhaValida(_criptografiaHelper.Descriptografar(_usuario.Senha));
+                bool tipoUsuarioValido = _textoHelper.TipoUsuarioValido(_usuario.TipoUsuario);
+
+                if (!emailValido)
+                {
+                    string erroResponse = "Email inválido.";
+                    _logger.LogError(erroResponse);
+                    return BadRequest(erroResponse);
+                }
+                else if (!senhaValida)
+                {
+                    string erroResponse = "Senha inválida.";
+                    _logger.LogError(erroResponse);
+                    return BadRequest(erroResponse);
+                }
+                else if (!tipoUsuarioValido)
+                {
+                    string erroResponse = "Tipo de usuário inválida.";
+                    _logger.LogError(erroResponse);
+                    return BadRequest(erroResponse);
+                }
+                else
+                {
+                    _usuarioRepository.Alterar(_usuario);
+
+                    string okResponse = $"Usuário {_usuario.Id} alterado com sucesso.";
+                    _logger.LogInfotmation(okResponse);
+                    return Ok(okResponse);
+                }
             }
             catch (Exception ex)
             {
@@ -305,5 +351,7 @@ namespace FCG.Controllers
                 return BadRequest(erroResponse);
             }
         }
+
+        #endregion
     }
 }

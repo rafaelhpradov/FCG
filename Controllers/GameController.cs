@@ -1,4 +1,5 @@
 ﻿using FCG.DTOs;
+using FCG.Inputs;
 using FCG.Interfaces;
 using FCG.Middlewares;
 using FCG.Models;
@@ -14,64 +15,7 @@ namespace FCG.Controllers
         private readonly IGameRepository _gameRepository = gameRepository;
         private readonly BaseLogger<GameController> _logger = Logger;
 
-        [HttpPost]
-        [Authorize(Policy = "Admin")]
-        public IActionResult Post([FromBody] Game game)
-        {
-            try
-            {
-                var _game = new Game()
-                {
-                    Nome = game.Nome,
-                    Produtora = game.Produtora,
-                    Descricao = game.Descricao,
-                    DataLancamento = game.DataLancamento,
-                    Preco = game.Preco
-                };
-                _gameRepository.Cadastrar(_game);
-
-                string okResponse = $"Game {_game.Id} cadastrado com sucesso.";
-                _logger.LogInfotmation(okResponse);
-                return Ok(okResponse);
-            }
-            catch (Exception ex)
-            {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
-            }
-        }
-
-        [HttpPost("Cadastro-em-massa")]
-        [Authorize(Policy = "Admin")]
-        public IActionResult CadastroEmMassa()
-        {
-            try
-            {
-                _gameRepository.CadastrarEmMassa();
-                return Ok();
-
-                string okResponse = $"Games cadastrados com sucesso.";
-                _logger.LogInfotmation(okResponse);
-                return Ok(okResponse);
-            }
-            catch (Exception ex)
-            {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
-            }
-        }
+        #region [Get]
 
         [HttpGet("cadastro-todos")]
         public IActionResult get()
@@ -144,21 +88,87 @@ namespace FCG.Controllers
             }
         }
 
-        [HttpPut]
+        #endregion
+
+        #region [Post]
+
+        [HttpPost]
         [Authorize(Policy = "Admin")]
-        public IActionResult Put([FromBody] Game game)
+        public IActionResult Post([FromBody] GameInput gameInput)
         {
             try
             {
-                var _game = _gameRepository.ObterPorID(game.Id);
+                var _game = new Game()
                 {
-                    _game.Nome = game.Nome;
-                    _game.Produtora = game.Produtora;
-                    _game.Descricao = game.Descricao;
-                    _game.DataLancamento = game.DataLancamento;
-                    _game.Preco = game.Preco;
-                }
-                ;
+                    Nome = gameInput.Nome,
+                    Produtora = gameInput.Produtora,
+                    Descricao = gameInput.Descricao,
+                    DataLancamento = gameInput.DataLancamento,
+                    Preco = gameInput.Preco
+                };
+                _gameRepository.Cadastrar(_game);
+
+                string okResponse = $"Game {_game.Id} cadastrado com sucesso.";
+                _logger.LogInfotmation(okResponse);
+                return Ok(okResponse);
+            }
+            catch (Exception ex)
+            {
+                var erroResponse = new ErroResponse
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Erro = "Bad Request",
+                    Detalhe = ex.Message
+                };
+                _logger.LogError(erroResponse.ToString());
+                return BadRequest(erroResponse);
+            }
+        }
+
+        [HttpPost("Cadastro-em-massa")]
+        [Authorize(Policy = "Admin")]
+        public IActionResult CadastroEmMassa()
+        {
+            try
+            {
+                _gameRepository.CadastrarEmMassa();
+                return Ok();
+
+                string okResponse = $"Games cadastrados com sucesso.";
+                _logger.LogInfotmation(okResponse);
+                return Ok(okResponse);
+            }
+            catch (Exception ex)
+            {
+                var erroResponse = new ErroResponse
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Erro = "Bad Request",
+                    Detalhe = ex.Message
+                };
+                _logger.LogError(erroResponse.ToString());
+                return BadRequest(erroResponse);
+            }
+        }
+
+        #endregion
+
+        #region [Put Delete]
+
+        [HttpPut]
+        [Authorize(Policy = "Admin")]
+        public IActionResult Put([FromBody] GameUpdateInput gameUpdateInput)
+        {
+            try
+            {
+                var _game = _gameRepository.ObterPorID(gameUpdateInput.Id);
+                {
+                    _game.Nome = gameUpdateInput.Nome;
+                    _game.Produtora = gameUpdateInput.Produtora;
+                    _game.Descricao = gameUpdateInput.Descricao;
+                    _game.DataLancamento = gameUpdateInput.DataLancamento;
+                    _game.Preco = gameUpdateInput.Preco;
+                };
                 _gameRepository.Alterar(_game);
 
                 string okResponse = $"Game {_game.Id} alterado com sucesso.";
@@ -203,5 +213,7 @@ namespace FCG.Controllers
                 return BadRequest(erroResponse);
             }
         }
+
+        #endregion
     }
 }
