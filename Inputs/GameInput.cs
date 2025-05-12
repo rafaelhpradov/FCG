@@ -19,7 +19,7 @@ namespace FCG.Inputs
         public required string Produtora { get; set; }
 
         /// <summary>
-        /// Descrição do jogo.
+        /// Descrição do jogo. 
         /// </summary>
         [Required]
         [MaxLength(500)]
