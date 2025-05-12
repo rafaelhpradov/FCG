@@ -18,7 +18,7 @@ namespace FCG.Inputs
         public string Nome { get; set; }
 
         /// <summary>
-        /// Produtora do jogo.
+        /// Produtora do jogo. 
         /// </summary>
         [Required]
         [MaxLength(100)]
