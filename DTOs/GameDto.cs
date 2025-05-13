@@ -7,7 +7,7 @@
         public required string Nome { get; set; }
         public required string Produtora { get; set; }
         public required string Descricao { get; set; }
-        public required decimal Preco { get; set; }
+        public required string Preco { get; set; }
         public required string DataLancamento { get; set; }
 
         #region [Navegacao]

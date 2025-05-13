@@ -101,7 +101,7 @@ namespace FCG.Repository
                             Produtora = Pedido.Game.Produtora,
                             Descricao = Pedido.Game.Descricao,
                             DataLancamento = Pedido.Game.DataLancamento.ToString("yyyy-MM-dd"),
-                            Preco = Pedido.Game.Preco,
+                            Preco = Pedido.Game.Preco.ToString("F2"),
                         }
                     }).ToList(),
             };
@@ -135,7 +135,7 @@ namespace FCG.Repository
                             Produtora = Pedido.Game.Produtora,
                             Descricao = Pedido.Game.Descricao,
                             DataLancamento = Pedido.Game.DataLancamento.ToString("yyyy-MM-dd"),
-                            Preco = Pedido.Game.Preco,
+                            Preco = Pedido.Game.Preco.ToString("F2"),
                         }
                     }).ToList(),
             };

@@ -34,7 +34,7 @@ namespace FCG.Controllers
                         Produtora = game.Produtora,
                         Descricao = game.Descricao,
                         DataLancamento = game.DataLancamento.ToString("yyyy-MM-dd"),
-                        Preco = game.Preco,
+                        Preco = game.Preco.ToString("F2"),
                     });
                 }
                 _logger.LogInfotmation("Games exibidos com sucesso.");
@@ -79,7 +79,7 @@ namespace FCG.Controllers
                     Produtora = _game.Produtora,
                     Descricao = _game.Descricao,
                     DataLancamento = _game.DataLancamento.ToString("yyyy-MM-dd"),
-                    Preco = _game.Preco,
+                    Preco = _game.Preco.ToString("F2"),
                 };
                 _logger.LogInfotmation("Game exibido com sucesso.");
                 return Ok(_gameDto);
