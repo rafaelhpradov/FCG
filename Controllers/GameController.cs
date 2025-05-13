@@ -37,7 +37,7 @@ namespace FCG.Controllers
                         Preco = game.Preco,
                     });
                 }
-                                _logger.LogInfotmation("Games exibidos com sucesso.");
+                _logger.LogInfotmation("Games exibidos com sucesso.");
                 return Ok(_gamesDto);
             }
             catch (Exception ex)
@@ -71,6 +71,7 @@ namespace FCG.Controllers
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
+                
                 var _gameDto = new GameDto()
                 {
                     Id = _game.Id,
@@ -81,7 +82,7 @@ namespace FCG.Controllers
                     Preco = _game.Preco,
                 };
                 _logger.LogInfotmation("Game exibido com sucesso.");
-                return Ok(_game);
+                return Ok(_gameDto);
             }
             catch (Exception ex)
             {
