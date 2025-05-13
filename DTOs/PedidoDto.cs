@@ -3,7 +3,7 @@
     public class PedidoDto
     {
         public int Id { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public string DataCriacao { get; set; }
         public required int UsuarioId { get; set; }
         public required int GameId { get; set; }
 

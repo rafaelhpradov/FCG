@@ -3,12 +3,12 @@
     public class UsuarioDto
     {
         public int Id { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public string DataCriacao { get; set; }
         public required string Nome { get; set; }
         public required string Email { get; set; }
         public string Senha { get; set; }
         public string Endereco { get; set; }
-        public required DateTime DataNascimento { get; set; }
+        public required string DataNascimento { get; set; }
         public required short TipoUsuario { get; set; }
 
         #region [Navegacao]

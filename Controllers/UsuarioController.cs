@@ -37,7 +37,7 @@ namespace FCG.Controllers
                         Nome = usuario.Nome,
                         Email = usuario.Email,
                         Senha = usuario.Senha,
-                        DataNascimento = usuario.DataNascimento,
+                        DataNascimento = usuario.DataNascimento.ToString("yyyy-MM-dd"),
                         TipoUsuario = usuario.TipoUsuario
                     });
                 }
@@ -154,7 +154,7 @@ namespace FCG.Controllers
                     Id = _usuarios.Id,
                     Nome = _usuarios.Nome,
                     Email = _usuarios.Email,
-                    DataNascimento = _usuarios.DataNascimento,
+                    DataNascimento = _usuarios.DataNascimento.ToString("yyyy-MM-dd"),
                     TipoUsuario = _usuarios.TipoUsuario
                 });
                 return Ok(_usuariosDto);

@@ -81,26 +81,26 @@ namespace FCG.Repository
             return new UsuarioDto()
             {
                 Id = _usuario.Id,
-                DataCriacao = _usuario.DataCriacao,
+                DataCriacao = _usuario.DataCriacao.ToString("yyyy-MM-dd"),
                 Nome = _usuario.Nome,
-                DataNascimento = _usuario.DataNascimento,
+                DataNascimento = _usuario.DataNascimento.ToString("yyyy-MM-dd"),
                 Email = _usuario.Email,
                 TipoUsuario = _usuario.TipoUsuario,
                 Pedidos = _usuario.Pedidos
                     .Select(Pedido => new PedidoDto()
                     {
                         Id = Pedido.Id,
-                        DataCriacao = Pedido.DataCriacao,
+                        DataCriacao = Pedido.DataCriacao.ToString("yyyy-MM-dd"),
                         UsuarioId = Pedido.UsuarioId,
                         GameId = Pedido.GameId,
                         Game = new GameDto()
                         {
                             Id = Pedido.Game.Id,
-                            DataCriacao = Pedido.Game.DataCriacao,
+                            DataCriacao = Pedido.Game.DataCriacao.ToString("yyyy-MM-dd"),
                             Nome = Pedido.Game.Nome,
                             Produtora = Pedido.Game.Produtora,
                             Descricao = Pedido.Game.Descricao,
-                            DataLancamento = Pedido.Game.DataLancamento,
+                            DataLancamento = Pedido.Game.DataLancamento.ToString("yyyy-MM-dd"),
                             Preco = Pedido.Game.Preco,
                         }
                     }).ToList(),
@@ -114,9 +114,9 @@ namespace FCG.Repository
             return new UsuarioDto()
             {
                 Id = _usuario.Id,
-                DataCriacao = _usuario.DataCriacao,
+                DataCriacao = _usuario.DataCriacao.ToString("yyyy-MM-dd"),
                 Nome = _usuario.Nome,
-                DataNascimento = _usuario.DataNascimento,
+                DataNascimento = _usuario.DataNascimento.ToString("yyyy-MM-dd"),
                 Email = _usuario.Email,
                 TipoUsuario = _usuario.TipoUsuario,
                 Pedidos = _usuario.Pedidos
@@ -124,17 +124,17 @@ namespace FCG.Repository
                     .Select(Pedido => new PedidoDto()
                     {
                         Id = Pedido.Id,
-                        DataCriacao = Pedido.DataCriacao,
+                        DataCriacao = Pedido.DataCriacao.ToString("yyyy-MM-dd"),
                         UsuarioId = Pedido.UsuarioId,
                         GameId = Pedido.GameId,
                         Game = new GameDto()
                         {
                             Id = Pedido.Game.Id,
-                            DataCriacao = Pedido.Game.DataCriacao,
+                            DataCriacao = Pedido.Game.DataCriacao.ToString("yyyy-MM-dd"),
                             Nome = Pedido.Game.Nome,
                             Produtora = Pedido.Game.Produtora,
                             Descricao = Pedido.Game.Descricao,
-                            DataLancamento = Pedido.Game.DataLancamento,
+                            DataLancamento = Pedido.Game.DataLancamento.ToString("yyyy-MM-dd"),
                             Preco = Pedido.Game.Preco,
                         }
                     }).ToList(),

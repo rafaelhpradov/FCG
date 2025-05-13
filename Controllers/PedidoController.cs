@@ -10,78 +10,34 @@ namespace FCG.Controllers
 {
     [ApiController]
     [Route("api/[controller]")] 
-    public class GameController(IGameRepository gameRepository, BaseLogger<GameController> Logger) : ControllerBase
+    public class PedidoController(IPedidoRepository pedidoRepository, BaseLogger<GameController> Logger) : ControllerBase
     {
-        private readonly IGameRepository _gameRepository = gameRepository;
+        private readonly IPedidoRepository _pedidoRepository = pedidoRepository;
         private readonly BaseLogger<GameController> _logger = Logger;
 
         #region [Get]
 
-        [HttpGet("cadastro-todos")]
-        public IActionResult get()
+        [HttpGet("todos")]
+        [Authorize(Policy = "Admin")]
+        public IActionResult Get()
         {
             try
             {
-                var _gamesDto = new List<GameDto>();
-                var _games = _gameRepository.ObterTodos();
-
-                foreach (var game in _games)
+                var _pedidosDto = new List<PedidoDto>();
+                var _pedidos = _pedidoRepository.ObterTodos();
+                
+                foreach (var pedido in _pedidos)
                 {
-                    _gamesDto.Add(new GameDto()
+                    _pedidosDto.Add(new PedidoDto()
                     {
-                        Id = game.Id,
-                        Nome = game.Nome,
-                        Produtora = game.Produtora,
-                        Descricao = game.Descricao,
-                        DataLancamento = game.DataLancamento.ToString("yyyy-MM-dd"),
-                        Preco = game.Preco,
+                        Id = pedido.Id,
+                        DataCriacao = pedido.DataCriacao.ToString("yyyy-MM-dd"),
+                        UsuarioId = pedido.UsuarioId,
+                        GameId = pedido.GameId,
                     });
                 }
-                                _logger.LogInfotmation("Games exibidos com sucesso.");
-                return Ok(_gamesDto);
-            }
-            catch (Exception ex)
-            {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
-            }
-        }
-
-        [HttpGet]
-        [Route("{nome}")]
-        public IActionResult Get([FromRoute] string nome)
-        {
-            try
-            {
-                var _game = _gameRepository.ObterPorNome(nome);
-                if (_game == null)
-                {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Game não encontrado."
-                    };
-                    _logger.LogError(erroResponse.ToString());
-                    return NotFound(erroResponse);
-                }
-                var _gameDto = new GameDto()
-                {
-                    Id = _game.Id,
-                    Nome = _game.Nome,
-                    Produtora = _game.Produtora,
-                    Descricao = _game.Descricao,
-                    DataLancamento = _game.DataLancamento.ToString("yyyy-MM-dd"),
-                    Preco = _game.Preco,
-                };
-                _logger.LogInfotmation("Game exibido com sucesso.");
-                return Ok(_game);
+                _logger.LogInfotmation("Todos os pedidos exibidos com sucesso.");
+                return Ok(_pedidosDto);
             }
             catch (Exception ex)
             {
@@ -102,8 +58,8 @@ namespace FCG.Controllers
         {
             try
             {
-                var _game = _gameRepository.ObterPorID(id);
-                if (_game == null)
+                var _pedido = _pedidoRepository.ObterPorID(id);
+                if (_pedido == null)
                 {
                     var erroResponse = new ErroResponse
                     {
@@ -114,8 +70,17 @@ namespace FCG.Controllers
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
-                _logger.LogInfotmation("Game exibido com sucesso.");
-                return Ok(_game);
+
+                var _pedidoDto = new PedidoDto()
+                {
+                    Id = _pedido.Id,
+                    DataCriacao = _pedido.DataCriacao.ToString("yyyy-MM-dd"),
+                    UsuarioId = _pedido.UsuarioId,
+                    GameId = _pedido.GameId,
+                };
+
+                _logger.LogInfotmation($"Pedido exibido com sucesso.");
+                return Ok(_pedidoDto);
             }
             catch (Exception ex)
             {
@@ -135,22 +100,18 @@ namespace FCG.Controllers
         #region [Post]
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
-        public IActionResult Post([FromBody] GameInput gameInput)
+        public IActionResult Post([FromBody] PedidoInput pedidoInput)
         {
             try
             {
-                var _game = new Game()
+                var _pedido = new Pedido()
                 {
-                    Nome = gameInput.Nome,
-                    Produtora = gameInput.Produtora,
-                    Descricao = gameInput.Descricao,
-                    DataLancamento = gameInput.DataLancamento,
-                    Preco = gameInput.Preco
+                    UsuarioId = pedidoInput.UsuarioId,
+                    GameId = pedidoInput.GameId,
                 };
-                _gameRepository.Cadastrar(_game);
+                _pedidoRepository.Cadastrar(_pedido);
 
-                string okResponse = $"Game {_game.Id} cadastrado com sucesso.";
+                string okResponse = $"Pedido {_pedido.Id} cadastrado com sucesso.";
                 _logger.LogInfotmation(okResponse);
                 return Ok(okResponse);
             }
@@ -168,12 +129,11 @@ namespace FCG.Controllers
         }
 
         [HttpPost("Cadastro-em-massa")]
-        [Authorize(Policy = "Admin")]
         public IActionResult CadastroEmMassa()
         {
             try
             {
-                _gameRepository.CadastrarEmMassa();
+                _pedidoRepository.CadastrarEmMassa();
                 return Ok();
 
                 string okResponse = $"Games cadastrados com sucesso.";
@@ -198,22 +158,18 @@ namespace FCG.Controllers
         #region [Put Delete]
 
         [HttpPut]
-        [Authorize(Policy = "Admin")]
-        public IActionResult Put([FromBody] GameUpdateInput gameUpdateInput)
+        [Route("{Id:int}")]
+        public IActionResult Put([FromBody] PedidoInput pedidoInput, [FromRoute] int Id)
         {
             try
             {
-                var _game = _gameRepository.ObterPorID(gameUpdateInput.Id);
+                var _pedido = _pedidoRepository.ObterPorID(Id);
                 {
-                    _game.Nome = gameUpdateInput.Nome;
-                    _game.Produtora = gameUpdateInput.Produtora;
-                    _game.Descricao = gameUpdateInput.Descricao;
-                    _game.DataLancamento = gameUpdateInput.DataLancamento;
-                    _game.Preco = gameUpdateInput.Preco;
+                    _pedido.GameId = pedidoInput.GameId;
                 };
-                _gameRepository.Alterar(_game);
+                _pedidoRepository.Alterar(_pedido);
 
-                string okResponse = $"Game {_game.Id} alterado com sucesso.";
+                string okResponse = $"Pedido {_pedido.Id} alterado com sucesso.";
                 _logger.LogInfotmation(okResponse);
                 return Ok(okResponse);
             }
@@ -237,9 +193,9 @@ namespace FCG.Controllers
         {
             try
             {
-                _gameRepository.Deletar(Id);
+                _pedidoRepository.Deletar(Id);
 
-                string okResponse = $"Game {Id} deletado com sucesso.";
+                string okResponse = $"Pedido {Id} deletado com sucesso.";
                 _logger.LogInfotmation(okResponse);
                 return Ok(okResponse);
             }

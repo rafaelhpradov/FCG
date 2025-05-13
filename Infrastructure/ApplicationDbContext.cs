@@ -38,6 +38,7 @@ namespace FCG.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            modelBuilder.Entity<Pedido>().Ignore(x => x.Nome);
         }
     }
 }
