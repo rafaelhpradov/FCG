@@ -81,7 +81,7 @@ namespace FCG.Controllers
                     DataLancamento = _game.DataLancamento.ToString("yyyy-MM-dd"),
                     Preco = _game.Preco.ToString("F2"),
                 };
-                _logger.LogInfotmation("Game exibido com sucesso.");
+                _logger.LogInfotmation($"Game {_game.Nome} exibido com sucesso.");
                 return Ok(_gameDto);
             }
             catch (Exception ex)
@@ -115,8 +115,18 @@ namespace FCG.Controllers
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
-                _logger.LogInfotmation("Game exibido com sucesso.");
-                return Ok(_game);
+                
+                var _gameDto = new GameDto()
+                {
+                    Id = _game.Id,
+                    Nome = _game.Nome,
+                    Produtora = _game.Produtora,
+                    Descricao = _game.Descricao,
+                    DataLancamento = _game.DataLancamento.ToString("yyyy-MM-dd"),
+                    Preco = _game.Preco.ToString("F2"),
+                };
+                _logger.LogInfotmation($"Game {_game.Nome} exibido com sucesso.");
+                return Ok(_gameDto);
             }
             catch (Exception ex)
             {

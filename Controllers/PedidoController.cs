@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FCG.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] 
+    [Route("api/[controller]")]
     public class PedidoController(IPedidoRepository pedidoRepository, BaseLogger<GameController> Logger) : ControllerBase
     {
         private readonly IPedidoRepository _pedidoRepository = pedidoRepository;
@@ -25,7 +25,7 @@ namespace FCG.Controllers
             {
                 var _pedidosDto = new List<PedidoDto>();
                 var _pedidos = _pedidoRepository.ObterTodos();
-                
+
                 foreach (var pedido in _pedidos)
                 {
                     _pedidosDto.Add(new PedidoDto()
@@ -158,18 +158,31 @@ namespace FCG.Controllers
         #region [Put Delete]
 
         [HttpPut]
-        [Route("{Id:int}")]
-        public IActionResult Put([FromBody] PedidoInput pedidoInput, [FromRoute] int Id)
+        public IActionResult Put([FromBody] PedidoUpdateInput pedidoUpdateInput)
         {
             try
             {
-                var _pedido = _pedidoRepository.ObterPorID(Id);
+                var _pedido = _pedidoRepository.ObterPorID(pedidoUpdateInput.Id);
                 {
-                    _pedido.GameId = pedidoInput.GameId;
+                    if (_pedido == null)
+                    {
+                        var erroResponse = new ErroResponse
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            Erro = "Not Found",
+                            Detalhe = "Game não encontrado."
+                        };
+                        _logger.LogError(erroResponse.ToString());
+                        return NotFound(erroResponse);
+                    }
+                    else
+                    {
+                        _pedido.GameId = pedidoUpdateInput.GameId;
+                    }
                 };
                 _pedidoRepository.Alterar(_pedido);
 
-                string okResponse = $"Pedido {_pedido.Id} alterado com sucesso.";
+                string okResponse = $"Game {_pedido.Id} alterado com sucesso.";
                 _logger.LogInfotmation(okResponse);
                 return Ok(okResponse);
             }

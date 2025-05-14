@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FCG.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] 
+    [Route("api/[controller]")]
     public class UsuarioController(IUsuarioRepository usuarioRepository, CriptografiaHelper criptografiaHelper, TextoHelper textoHelper, BaseLogger<UsuarioController> Logger) : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
@@ -147,20 +147,60 @@ namespace FCG.Controllers
                     return NotFound(erroResponse);
                 }
 
-                var _usuariosDto = new List<UsuarioDto>();
-
-                _usuariosDto.Add(new UsuarioDto()
+                var _usuariosDto = new UsuarioDto()
                 {
                     Id = _usuarios.Id,
                     Nome = _usuarios.Nome,
                     Email = _usuarios.Email,
                     DataNascimento = _usuarios.DataNascimento.ToString("yyyy-MM-dd"),
                     TipoUsuario = _usuarios.TipoUsuario
-                });
+                };
+                _logger.LogInfotmation($"Usuário {_usuarios.Nome} exibido com sucesso.");
                 return Ok(_usuariosDto);
+            }
+            catch (Exception ex)
+            {
+                var erroResponse = new ErroResponse
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Erro = "Bad Request",
+                    Detalhe = ex.Message
+                };
+                _logger.LogError(erroResponse.ToString());
+                return BadRequest(erroResponse);
+            }
+        }
 
-                _logger.LogInfotmation($"Usuário {id} exibido com sucesso.");
-                return Ok(_usuarios);
+        [HttpGet]
+        [Authorize(Policy = "Admin")]
+        [Route("{nome}")]
+        public IActionResult Get([FromRoute] string nome)
+        {
+            try
+            {
+                var _usuarios = _usuarioRepository.ObterPorNome(nome);
+                if (_usuarios == null)
+                {
+                    var erroResponse = new ErroResponse
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        Erro = "Not Found",
+                        Detalhe = "Usuário não encontrado."
+                    };
+                    _logger.LogError(erroResponse.ToString());
+                    return NotFound(erroResponse);
+                }
+
+                var _usuariosDto = new UsuarioDto()
+                {
+                    Id = _usuarios.Id,
+                    Nome = _usuarios.Nome,
+                    Email = _usuarios.Email,
+                    DataNascimento = _usuarios.DataNascimento.ToString("yyyy-MM-dd"),
+                    TipoUsuario = _usuarios.TipoUsuario
+                };
+                _logger.LogInfotmation($"Usuário {_usuarios.Nome} exibido com sucesso.");
+                return Ok(_usuariosDto);
             }
             catch (Exception ex)
             {
