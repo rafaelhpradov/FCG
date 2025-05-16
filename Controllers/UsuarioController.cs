@@ -224,6 +224,32 @@ namespace FCG.Controllers
         {
             try
             {
+                var _usuarioTesteNome = _usuarioRepository.ObterPorNome(usuarioInput.Nome);
+                if (_usuarioTesteNome != null)
+                {
+                    var erroResponse = new ErroResponse
+                    {
+                        StatusCode = StatusCodes.Status409Conflict,
+                        Erro = "Usuário já cadastrado.",
+                        Detalhe = "Usuário já cadastrado."
+                    };
+                    _logger.LogError(erroResponse.ToString());
+                    return Conflict(erroResponse);
+                }
+
+                var _usuarioTesteEmail = _usuarioRepository.ObterPorEmail(usuarioInput.Email);
+                if (_usuarioTesteEmail != null)
+                {
+                    var erroResponse = new ErroResponse
+                    {
+                        StatusCode = StatusCodes.Status409Conflict,
+                        Erro = "Email já cadastrado.",
+                        Detalhe = "Email já cadastrado."
+                    };
+                    _logger.LogError(erroResponse.ToString());
+                    return Conflict(erroResponse);
+                }
+
                 var _usuario = new Usuario()
                 {
                     Nome = usuarioInput.Nome,

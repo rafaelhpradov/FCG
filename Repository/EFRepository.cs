@@ -45,6 +45,9 @@ namespace FCG.Repository
         public T ObterPorNome(string nome)
             => _dbSet.FirstOrDefault(entidade => entidade.Nome == nome);
 
+        public T ObterPorEmail(string email)
+        => _dbSet.FirstOrDefault(entidade => entidade.Email == email);
+
         public IList<T> ObterTodos()
             => _dbSet.ToList();
     }
