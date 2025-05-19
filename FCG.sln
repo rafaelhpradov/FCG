@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35828.75 d17.13
+VisualStudioVersion = 17.13.35828.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCG", "FCG.csproj", "{B00663A3-221A-496E-BB7B-248AF80D038C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TEST-FCG", "..\TEST-FCG\TEST-FCG.csproj", "{E8B19F73-A38A-4C9F-BCA8-31FB5E02A613}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B00663A3-221A-496E-BB7B-248AF80D038C} = {B00663A3-221A-496E-BB7B-248AF80D038C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{B00663A3-221A-496E-BB7B-248AF80D038C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B00663A3-221A-496E-BB7B-248AF80D038C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B00663A3-221A-496E-BB7B-248AF80D038C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B19F73-A38A-4C9F-BCA8-31FB5E02A613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B19F73-A38A-4C9F-BCA8-31FB5E02A613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B19F73-A38A-4C9F-BCA8-31FB5E02A613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B19F73-A38A-4C9F-BCA8-31FB5E02A613}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
