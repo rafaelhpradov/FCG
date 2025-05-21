@@ -45,7 +45,7 @@ namespace FCG.Controllers
 
                 var (token, dataCriacao, dataExpiracao) = GerarToken(_usuario.Nome, _usuario.Email, _usuario.TipoUsuario);
 
-                _logger.LogInfotmation("Token gerado com sucesso.");
+                _logger.LogInformation("Token gerado com sucesso.");
 
                 return Ok(new
                 {

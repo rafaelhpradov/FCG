@@ -9,7 +9,7 @@
             _logger = logger;
         }
 
-        public virtual void LogInfotmation(string message)
+        public virtual void LogInformation(string message)
         {
             _logger?.LogInformation($"{DateTime.Now}: {message}");
         }

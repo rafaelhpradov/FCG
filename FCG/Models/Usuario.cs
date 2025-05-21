@@ -2,7 +2,7 @@
 
 namespace FCG.Models
 {
-    public class Usuario : EntityBase
+    public class Usuario : EntityBase, IEmail
     {
         public required string Nome { get; set; }
         public required string Email { get; set; }

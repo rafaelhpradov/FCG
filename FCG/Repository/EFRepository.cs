@@ -45,8 +45,18 @@ namespace FCG.Repository
         public T ObterPorNome(string nome)
             => _dbSet.FirstOrDefault(entidade => entidade.Nome == nome);
 
+        //public T ObterPorEmail(string email)
+        //=> _dbSet.FirstOrDefault(entidade => entidade.Email == email);
+
         public T ObterPorEmail(string email)
-        => _dbSet.FirstOrDefault(entidade => entidade.Email == email);
+        {
+            if (typeof(IEmail).IsAssignableFrom(typeof(T)))
+            {
+                return _dbSet.Cast<IEmail>()
+                             .FirstOrDefault(e => e.Email == email) as T;
+            }
+            throw new NotSupportedException("A entidade não possui campo Email.");
+        }
 
         public IList<T> ObterTodos()
             => _dbSet.ToList();

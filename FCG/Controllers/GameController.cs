@@ -37,19 +37,13 @@ namespace FCG.Controllers
                         Preco = game.Preco.ToString("F2"),
                     });
                 }
-                _logger.LogInfotmation("Games exibidos com sucesso.");
+                _logger.LogInformation("Games exibidos com sucesso.");
                 return Ok(_gamesDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -62,12 +56,7 @@ namespace FCG.Controllers
                 var _game = _gameRepository.ObterPorNome(nome);
                 if (_game == null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Game não encontrado."
-                    };
+                    var erroResponse = "Game não encontrado.";
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
@@ -81,19 +70,13 @@ namespace FCG.Controllers
                     DataLancamento = _game.DataLancamento.ToString("yyyy-MM-dd"),
                     Preco = _game.Preco.ToString("F2"),
                 };
-                _logger.LogInfotmation($"Game {_game.Nome} exibido com sucesso.");
+                _logger.LogInformation($"Game {_game.Nome} exibido com sucesso.");
                 return Ok(_gameDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -106,12 +89,7 @@ namespace FCG.Controllers
                 var _game = _gameRepository.ObterPorID(id);
                 if (_game == null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Game não encontrado."
-                    };
+                    var erroResponse = "Game não encontrado.";
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
@@ -125,19 +103,13 @@ namespace FCG.Controllers
                     DataLancamento = _game.DataLancamento.ToString("yyyy-MM-dd"),
                     Preco = _game.Preco.ToString("F2"),
                 };
-                _logger.LogInfotmation($"Game {_game.Nome} exibido com sucesso.");
+                _logger.LogInformation($"Game {_game.Nome} exibido com sucesso.");
                 return Ok(_gameDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -162,19 +134,13 @@ namespace FCG.Controllers
                 _gameRepository.Cadastrar(_game);
 
                 string okResponse = $"Game {_game.Id} cadastrado com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -185,22 +151,15 @@ namespace FCG.Controllers
             try
             {
                 _gameRepository.CadastrarEmMassa();
-                return Ok();
 
                 string okResponse = $"Games cadastrados com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -225,19 +184,13 @@ namespace FCG.Controllers
                 _gameRepository.Alterar(_game);
 
                 string okResponse = $"Game {_game.Id} alterado com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -251,19 +204,13 @@ namespace FCG.Controllers
                 _gameRepository.Deletar(Id);
 
                 string okResponse = $"Game {Id} deletado com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
