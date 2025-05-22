@@ -33,9 +33,10 @@ internal class Program
                 Description = "Plataforma de venda de jogos digitais e gestão de servidores para partidas online. Grupo Tech Challenge 8NETT.",
                 Contact = new OpenApiContact()
                 {
-                    Name = "rm363924",
-                    Email = "wilson.carvalhais@gmail.com"
+                    Name = "Grupo 149, RMs: 364460, 364901, 362661, 363924",
+                    Email = "wilson.carvalhais@gmail.com; rodrigomelos@outlook.com.br; felipe.lima1996@hotmail.com; rafaelhvasconcelos@hotmail.com",
                 },
+
                 License = new OpenApiLicense()
                 {
                     Name = "MIT License",
