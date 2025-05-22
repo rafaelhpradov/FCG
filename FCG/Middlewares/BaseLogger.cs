@@ -24,7 +24,7 @@
             _logger?.LogError($"{DateTime.Now}: {message}");
         } 
 
-        public virtual void LogDebug(string message)
+        public virtual void LogDebug(string message) 
         {
             _logger?.LogDebug($"{DateTime.Now}: {message}");
         }
