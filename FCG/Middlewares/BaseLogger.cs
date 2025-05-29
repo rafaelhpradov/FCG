@@ -9,7 +9,7 @@
             _logger = logger;
         }
 
-        public virtual void LogInfotmation(string message)
+        public virtual void LogInformation(string message)
         {
             _logger?.LogInformation($"{DateTime.Now}: {message}");
         }
@@ -24,7 +24,7 @@
             _logger?.LogError($"{DateTime.Now}: {message}");
         } 
 
-        public virtual void LogDebug(string message)
+        public virtual void LogDebug(string message) 
         {
             _logger?.LogDebug($"{DateTime.Now}: {message}");
         }

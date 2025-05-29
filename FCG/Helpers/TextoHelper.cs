@@ -19,7 +19,7 @@ namespace FCG.Helpers
             if (string.IsNullOrWhiteSpace(senha))
                 return false;
 
-            var hasMinimumLength = senha.Length >= 6;
+            var hasMinimumLength = senha.Length >= 8;
             var hasUpperChar = new Regex(@"[A-Z]+").IsMatch(senha);
             var hasLowerChar = new Regex(@"[a-z]+").IsMatch(senha);
             var hasNumber = new Regex(@"[0-9]+").IsMatch(senha);

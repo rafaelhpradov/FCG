@@ -20,7 +20,7 @@
         /// <summary>
         /// E-mail opcional, pode ser usado ou ignorado por classes derivadas.
         /// </summary>
-        public virtual string? Email { get; set; }
+        //public virtual string? Email { get; set; }
 
         public EntityBase()
         {

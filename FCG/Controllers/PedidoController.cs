@@ -36,19 +36,13 @@ namespace FCG.Controllers
                         GameId = pedido.GameId,
                     });
                 }
-                _logger.LogInfotmation("Todos os pedidos exibidos com sucesso.");
+                _logger.LogInformation("Todos os pedidos exibidos com sucesso.");
                 return Ok(_pedidosDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -61,12 +55,7 @@ namespace FCG.Controllers
                 var _pedido = _pedidoRepository.ObterPorID(id);
                 if (_pedido == null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Game não encontrado."
-                    };
+                    var erroResponse = "Pedido não encontrado.";
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
@@ -79,19 +68,13 @@ namespace FCG.Controllers
                     GameId = _pedido.GameId,
                 };
 
-                _logger.LogInfotmation($"Pedido exibido com sucesso.");
+                _logger.LogInformation($"Pedido exibido com sucesso.");
                 return Ok(_pedidoDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -112,19 +95,13 @@ namespace FCG.Controllers
                 _pedidoRepository.Cadastrar(_pedido);
 
                 string okResponse = $"Pedido {_pedido.Id} cadastrado com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -134,22 +111,15 @@ namespace FCG.Controllers
             try
             {
                 _pedidoRepository.CadastrarEmMassa();
-                return Ok();
 
                 string okResponse = $"Games cadastrados com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -166,12 +136,7 @@ namespace FCG.Controllers
                 {
                     if (_pedido == null)
                     {
-                        var erroResponse = new ErroResponse
-                        {
-                            StatusCode = StatusCodes.Status404NotFound,
-                            Erro = "Not Found",
-                            Detalhe = "Game não encontrado."
-                        };
+                        var erroResponse = "Pedido não encontrado.";
                         _logger.LogError(erroResponse.ToString());
                         return NotFound(erroResponse);
                     }
@@ -183,19 +148,13 @@ namespace FCG.Controllers
                 _pedidoRepository.Alterar(_pedido);
 
                 string okResponse = $"Game {_pedido.Id} alterado com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -209,19 +168,13 @@ namespace FCG.Controllers
                 _pedidoRepository.Deletar(Id);
 
                 string okResponse = $"Pedido {Id} deletado com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

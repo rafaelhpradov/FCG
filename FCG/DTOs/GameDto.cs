@@ -10,6 +10,8 @@
         public required string Preco { get; set; }
         public required string DataLancamento { get; set; }
 
+        public virtual string Email { get; set; }
+
         #region [Navegacao]
         public ICollection<PedidoDto> Pedidos { get; set; }
         #endregion 

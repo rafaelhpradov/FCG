@@ -6,6 +6,7 @@ using FCG.DTOs;
 using FCG.Inputs;
 using FCG.Middlewares;
 using Microsoft.AspNetCore.Mvc;
+using Z.BulkOperations;
 
 namespace TEST_FCG._Tests_.Controllers
 {
@@ -14,6 +15,7 @@ namespace TEST_FCG._Tests_.Controllers
     {
         private Mock<IGameRepository> _gameRepoMock;
         private Mock<BaseLogger<GameController>> _loggerMock;
+        private Mock<BaseError> _errorMock;
         private GameController _controller;
 
         [TestInitialize]
@@ -21,7 +23,8 @@ namespace TEST_FCG._Tests_.Controllers
         {
             _gameRepoMock = new Mock<IGameRepository>();
             _loggerMock = new Mock<BaseLogger<GameController>>(MockBehavior.Loose, null as Microsoft.Extensions.Logging.ILogger<GameController>);
-            _controller = new GameController(_gameRepoMock.Object, _loggerMock.Object);
+            _errorMock = new Mock<BaseError>();
+            _controller = new GameController(_gameRepoMock.Object, _loggerMock.Object, _errorMock.Object);
         }
 
         [TestMethod]

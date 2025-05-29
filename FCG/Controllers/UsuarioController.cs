@@ -11,12 +11,12 @@ namespace FCG.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsuarioController(IUsuarioRepository usuarioRepository, CriptografiaHelper criptografiaHelper, TextoHelper textoHelper, BaseLogger<UsuarioController> Logger) : ControllerBase
+    public class UsuarioController(IUsuarioRepository usuarioRepository, CriptografiaHelper criptografiaHelper, TextoHelper textoHelper, BaseLogger<UsuarioController> logger) : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
-        private readonly BaseLogger<UsuarioController> _logger = Logger;
         private readonly CriptografiaHelper _criptografiaHelper = criptografiaHelper;
         private readonly TextoHelper _textoHelper = textoHelper;
+        private readonly BaseLogger<UsuarioController> _logger = logger;
 
         #region [Get]
 
@@ -41,19 +41,13 @@ namespace FCG.Controllers
                         TipoUsuario = usuario.TipoUsuario
                     });
                 }
-                _logger.LogInfotmation("Todos os usuários exibidos com sucesso.");
+                _logger.LogInformation("Todos os usuários exibidos com sucesso.");
                 return Ok(_usuariosDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -67,28 +61,17 @@ namespace FCG.Controllers
 
                 if (_usuarios == null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Usuário não encontrado."
-                    };
+                    var erroResponse = "Não há pedido para o usuário.";
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
-                _logger.LogInfotmation("Todos os pedidos exibidos.");
+                _logger.LogInformation("Todos os pedidos exibidos.");
                 return Ok(_usuarioRepository.ObterPedidosTodos(id));
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -101,28 +84,17 @@ namespace FCG.Controllers
                 var _usuarios = _usuarioRepository.ObterPorID(id);
                 if (_usuarios == null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Usuário não encontrado."
-                    };
+                    var erroResponse = "Não há pedido para o usuário.";
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
-                _logger.LogInfotmation("Pedidos dos últimos seis meses exibidos.");
+                _logger.LogInformation("Pedidos dos últimos seis meses exibidos.");
                 return Ok(_usuarioRepository.ObterPedidosSeisMeses(id));
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -137,12 +109,7 @@ namespace FCG.Controllers
 
                 if (_usuarios == null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Usuário não encontrado."
-                    };
+                    var erroResponse = "Usuário não encontrado.";
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
@@ -155,19 +122,13 @@ namespace FCG.Controllers
                     DataNascimento = _usuarios.DataNascimento.ToString("yyyy-MM-dd"),
                     TipoUsuario = _usuarios.TipoUsuario
                 };
-                _logger.LogInfotmation($"Usuário {_usuarios.Nome} exibido com sucesso.");
+                _logger.LogInformation($"Usuário {_usuarios.Nome} exibido com sucesso.");
                 return Ok(_usuariosDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -181,12 +142,7 @@ namespace FCG.Controllers
                 var _usuarios = _usuarioRepository.ObterPorNome(nome);
                 if (_usuarios == null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        Erro = "Not Found",
-                        Detalhe = "Usuário não encontrado."
-                    };
+                    var erroResponse = "Usuário não encontrado.";
                     _logger.LogError(erroResponse.ToString());
                     return NotFound(erroResponse);
                 }
@@ -199,19 +155,13 @@ namespace FCG.Controllers
                     DataNascimento = _usuarios.DataNascimento.ToString("yyyy-MM-dd"),
                     TipoUsuario = _usuarios.TipoUsuario
                 };
-                _logger.LogInfotmation($"Usuário {_usuarios.Nome} exibido com sucesso.");
+                _logger.LogInformation($"Usuário {_usuarios.Nome} exibido com sucesso.");
                 return Ok(_usuariosDto);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -227,12 +177,7 @@ namespace FCG.Controllers
                 var _usuarioTesteNome = _usuarioRepository.ObterPorNome(usuarioInput.Nome);
                 if (_usuarioTesteNome != null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status409Conflict,
-                        Erro = "Usuário já cadastrado.",
-                        Detalhe = "Usuário já cadastrado."
-                    };
+                    var erroResponse = "Usuário já cadastrado.";
                     _logger.LogError(erroResponse.ToString());
                     return Conflict(erroResponse);
                 }
@@ -240,12 +185,7 @@ namespace FCG.Controllers
                 var _usuarioTesteEmail = _usuarioRepository.ObterPorEmail(usuarioInput.Email);
                 if (_usuarioTesteEmail != null)
                 {
-                    var erroResponse = new ErroResponse
-                    {
-                        StatusCode = StatusCodes.Status409Conflict,
-                        Erro = "Email já cadastrado.",
-                        Detalhe = "Email já cadastrado."
-                    };
+                    var erroResponse = "Email já cadastrado.";
                     _logger.LogError(erroResponse.ToString());
                     return Conflict(erroResponse);
                 }
@@ -272,7 +212,7 @@ namespace FCG.Controllers
                 }
                 else if (!senhaValida)
                 {
-                    string erroResponse = "Senha inválida.";
+                    string erroResponse = "Senha inválida: deve conter no mínimo 8 caracteres, letra maiúscula, número e caratcter especial.";
                     _logger.LogError(erroResponse);
                     return BadRequest(erroResponse);
                 }
@@ -287,20 +227,14 @@ namespace FCG.Controllers
                     _usuarioRepository.Cadastrar(_usuario);
 
                     string okResponse = $"Usuário {_usuario.Id} cadastrado com sucesso.";
-                    _logger.LogInfotmation(okResponse);
+                    _logger.LogInformation(okResponse);
                     return Ok(okResponse);
                 }
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -310,22 +244,15 @@ namespace FCG.Controllers
             try
             {
                 _usuarioRepository.CadastrarEmMassa();
-                return Ok();
 
                 string okResponse = $"Usuários cadastrados com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -346,7 +273,8 @@ namespace FCG.Controllers
                     _usuario.Senha = _criptografiaHelper.Criptografar(usuarioInput.Senha);
                     _usuario.DataNascimento = usuarioInput.DataNascimento;
                     _usuario.TipoUsuario = usuarioInput.TipoUsuario;
-                };
+                }
+                ;
 
                 bool emailValido = _textoHelper.EmailValido(_usuario.Email);
                 bool senhaValida = _textoHelper.SenhaValida(_criptografiaHelper.Descriptografar(_usuario.Senha));
@@ -375,20 +303,14 @@ namespace FCG.Controllers
                     _usuarioRepository.Alterar(_usuario);
 
                     string okResponse = $"Usuário {_usuario.Id} alterado com sucesso.";
-                    _logger.LogInfotmation(okResponse);
+                    _logger.LogInformation(okResponse);
                     return Ok(okResponse);
                 }
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -402,22 +324,16 @@ namespace FCG.Controllers
                 _usuarioRepository.Deletar(id);
 
                 string okResponse = $"Usuário {id} excluído com sucesso.";
-                _logger.LogInfotmation(okResponse);
+                _logger.LogInformation(okResponse);
                 return Ok(okResponse);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErroResponse
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Erro = "Bad Request",
-                    Detalhe = ex.Message
-                };
-                _logger.LogError(erroResponse.ToString());
-                return BadRequest(erroResponse);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
-        #endregion
+        #endregion   
     }
 }
