@@ -22,13 +22,19 @@ namespace FCG.Infrastructure
             _connectionString = connectionString;
         }
 
+        // Add this constructor to support DbContextOptions (for testing and in-memory use)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Game> Games { get; set; } 
+        public DbSet<Game> Games { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured && !string.IsNullOrEmpty(_connectionString))
             {
                 optionsBuilder.UseSqlServer(_connectionString);
                 optionsBuilder.UseLazyLoadingProxies();

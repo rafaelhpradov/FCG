@@ -7,7 +7,7 @@ using FCG.Inputs;
 using FCG.Middlewares;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FCG.Controllers.Test
+namespace TEST_FCG._Tests_.Controllers
 {
     [TestClass]
     public class GameControllerTests
