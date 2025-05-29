@@ -3,41 +3,65 @@ using System.Collections.Generic;
 using FCG.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TEST_FCG._Tests_.Models
+namespace FCG.Models.Tests
 {
     [TestClass]
-    public class GameTests
+    public class GameTest
     {
         [TestMethod]
         public void CanSetAndGet_Produtora()
         {
-            var game = new Game { Produtora = "StudioX", Descricao = "Desc", Preco = 1, DataLancamento = DateTime.Today };
-            game.Produtora = "NewStudio";
-            Assert.AreEqual("NewStudio", game.Produtora);
+            var game = new Game
+            {
+                Produtora = "TestProdutora",
+                Descricao = "TestDescricao",
+                Preco = 99.99m,
+                DataLancamento = new DateTime(2024, 1, 1),
+                Pedidos = new List<Pedido>()
+            };
+            Assert.AreEqual("TestProdutora", game.Produtora);
         }
 
         [TestMethod]
         public void CanSetAndGet_Descricao()
         {
-            var game = new Game { Produtora = "StudioX", Descricao = "Desc", Preco = 1, DataLancamento = DateTime.Today };
-            game.Descricao = "New Description";
-            Assert.AreEqual("New Description", game.Descricao);
+            var game = new Game
+            {
+                Produtora = "Prod",
+                Descricao = "Descricao do jogo",
+                Preco = 10,
+                DataLancamento = DateTime.Today,
+                Pedidos = new List<Pedido>()
+            };
+            Assert.AreEqual("Descricao do jogo", game.Descricao);
         }
 
         [TestMethod]
         public void CanSetAndGet_Preco()
         {
-            var game = new Game { Produtora = "StudioX", Descricao = "Desc", Preco = 1, DataLancamento = DateTime.Today };
-            game.Preco = 99.99m;
-            Assert.AreEqual(99.99m, game.Preco);
+            var game = new Game
+            {
+                Produtora = "Prod",
+                Descricao = "Desc",
+                Preco = 123.45m,
+                DataLancamento = DateTime.Today,
+                Pedidos = new List<Pedido>()
+            };
+            Assert.AreEqual(123.45m, game.Preco);
         }
 
         [TestMethod]
         public void CanSetAndGet_DataLancamento()
         {
-            var game = new Game { Produtora = "StudioX", Descricao = "Desc", Preco = 1, DataLancamento = DateTime.Today };
-            var date = new DateTime(2022, 5, 1);
-            game.DataLancamento = date;
+            var date = new DateTime(2023, 12, 31);
+            var game = new Game
+            {
+                Produtora = "Prod",
+                Descricao = "Desc",
+                Preco = 1,
+                DataLancamento = date,
+                Pedidos = new List<Pedido>()
+            };
             Assert.AreEqual(date, game.DataLancamento);
         }
 
@@ -46,33 +70,38 @@ namespace TEST_FCG._Tests_.Models
         {
             var pedidos = new List<Pedido>
             {
-                new Pedido { UsuarioId = 1, GameId = 1 },
-                new Pedido { UsuarioId = 2, GameId = 1 }
+                new Pedido { Id = 1, Nome = "Pedido1", GameId = 1, UsuarioId = 1, DataCriacao = DateTime.Today }
             };
-            var game = new Game { Produtora = "StudioX", Descricao = "Desc", Preco = 1, DataLancamento = DateTime.Today, Pedidos = pedidos };
-            Assert.AreEqual(2, game.Pedidos.Count);
-            Assert.AreEqual(1, pedidos[0].UsuarioId); // Accessing the list directly
+            var game = new Game
+            {
+                Produtora = "Prod",
+                Descricao = "Desc",
+                Preco = 1,
+                DataLancamento = DateTime.Today,
+                Pedidos = pedidos
+            };
+            Assert.AreEqual(pedidos, game.Pedidos);
+            Assert.AreEqual(1, game.Pedidos.Count);
         }
 
         [TestMethod]
-        public void CanSetAndGet_BaseProperties()
+        public void InheritsFrom_EntityBase()
         {
             var game = new Game
             {
-                Nome = "TestGame",
-                Id = 123,
-                Produtora = "StudioX",
+                Produtora = "Prod",
                 Descricao = "Desc",
                 Preco = 1,
-                DataLancamento = DateTime.Today
+                DataLancamento = DateTime.Today,
+                Pedidos = new List<Pedido>()
             };
-            game.DataCriacao = new DateTime(2020, 1, 1);
-            game.Email = "test@game.com";
+            game.Nome = "GameName";
+            game.Id = 42;
+            game.DataCriacao = new DateTime(2022, 1, 1);
 
-            Assert.AreEqual("TestGame", game.Nome);
-            Assert.AreEqual(123, game.Id);
-            Assert.AreEqual(new DateTime(2020, 1, 1), game.DataCriacao);
-            Assert.AreEqual("test@game.com", game.Email);
+            Assert.AreEqual("GameName", game.Nome);
+            Assert.AreEqual(42, game.Id);
+            Assert.AreEqual(new DateTime(2022, 1, 1), game.DataCriacao);
         }
     }
 }

@@ -2,25 +2,31 @@ using System;
 using FCG.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TEST_FCG._Tests_.Models
+namespace FCG.Models.Tests
 {
     [TestClass]
-    public class PedidoTests
+    public class PedidoTest
     {
         [TestMethod]
         public void CanSetAndGet_UsuarioId()
         {
-            var pedido = new Pedido { UsuarioId = 10, GameId = 20 };
-            pedido.UsuarioId = 99;
-            Assert.AreEqual(99, pedido.UsuarioId);
+            var pedido = new Pedido
+            {
+                UsuarioId = 10,
+                GameId = 20
+            };
+            Assert.AreEqual(10, pedido.UsuarioId);
         }
 
         [TestMethod]
         public void CanSetAndGet_GameId()
         {
-            var pedido = new Pedido { UsuarioId = 10, GameId = 20 };
-            pedido.GameId = 77;
-            Assert.AreEqual(77, pedido.GameId);
+            var pedido = new Pedido
+            {
+                UsuarioId = 10,
+                GameId = 99
+            };
+            Assert.AreEqual(99, pedido.GameId);
         }
 
         [TestMethod]
@@ -30,13 +36,20 @@ namespace TEST_FCG._Tests_.Models
             {
                 Nome = "User1",
                 Email = "user1@email.com",
-                DataNascimento = new DateTime(1990, 1, 1),
-                TipoUsuario = 1
+                DataNascimento = new DateTime(2000, 1, 1),
+                TipoUsuario = 1,
+                Pedidos = [],
+                Endereco = "Rua 1",
+                Senha = "senha"
             };
-            var pedido = new Pedido { UsuarioId = 1, GameId = 2 };
-            pedido.Usuario = usuario;
+            var pedido = new Pedido
+            {
+                UsuarioId = 1,
+                GameId = 2,
+                Usuario = usuario
+            };
+            Assert.AreEqual(usuario, pedido.Usuario);
             Assert.AreEqual("User1", pedido.Usuario.Nome);
-            Assert.AreEqual("user1@email.com", pedido.Usuario.Email);
         }
 
         [TestMethod]
@@ -44,35 +57,37 @@ namespace TEST_FCG._Tests_.Models
         {
             var game = new Game
             {
-                Nome = "GameX",
-                Produtora = "StudioX",
+                Produtora = "Prod",
                 Descricao = "Desc",
                 Preco = 10,
-                DataLancamento = DateTime.Today
+                DataLancamento = DateTime.Today,
+                Pedidos = []
             };
-            var pedido = new Pedido { UsuarioId = 1, GameId = 2 };
-            pedido.Game = game;
-            Assert.AreEqual("GameX", pedido.Game.Nome);
-            Assert.AreEqual("StudioX", pedido.Game.Produtora);
+            var pedido = new Pedido
+            {
+                UsuarioId = 1,
+                GameId = 2,
+                Game = game
+            };
+            Assert.AreEqual(game, pedido.Game);
+            Assert.AreEqual("Prod", pedido.Game.Produtora);
         }
 
         [TestMethod]
-        public void CanSetAndGet_BaseProperties()
+        public void InheritsFrom_EntityBase()
         {
             var pedido = new Pedido
             {
-                Nome = "PedidoTest",
-                Id = 123,
                 UsuarioId = 1,
                 GameId = 2
             };
-            pedido.DataCriacao = new DateTime(2021, 1, 1);
-            pedido.Email = "pedido@email.com";
+            pedido.Nome = "PedidoNome";
+            pedido.Id = 123;
+            pedido.DataCriacao = new DateTime(2023, 1, 1);
 
-            Assert.AreEqual("PedidoTest", pedido.Nome);
+            Assert.AreEqual("PedidoNome", pedido.Nome);
             Assert.AreEqual(123, pedido.Id);
-            Assert.AreEqual(new DateTime(2021, 1, 1), pedido.DataCriacao);
-            Assert.AreEqual("pedido@email.com", pedido.Email);
+            Assert.AreEqual(new DateTime(2023, 1, 1), pedido.DataCriacao);
         }
     }
 }

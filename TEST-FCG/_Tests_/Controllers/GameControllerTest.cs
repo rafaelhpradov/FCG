@@ -1,21 +1,22 @@
-﻿using Moq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using FCG.Controllers;
 using FCG.Interfaces;
 using FCG.Models;
 using FCG.DTOs;
 using FCG.Inputs;
-using FCG.Middlewares;
 using Microsoft.AspNetCore.Mvc;
-using Z.BulkOperations;
+using System;
+using System.Collections.Generic;
+using FCG.Middlewares;
 
-namespace TEST_FCG._Tests_.Controllers
+namespace FCG.Controllers.Test
 {
     [TestClass]
-    public class GameControllerTests
+    public class GameControllerTest
     {
         private Mock<IGameRepository> _gameRepoMock;
         private Mock<BaseLogger<GameController>> _loggerMock;
-        private Mock<BaseError> _errorMock;
         private GameController _controller;
 
         [TestInitialize]
@@ -23,17 +24,16 @@ namespace TEST_FCG._Tests_.Controllers
         {
             _gameRepoMock = new Mock<IGameRepository>();
             _loggerMock = new Mock<BaseLogger<GameController>>(MockBehavior.Loose, null as Microsoft.Extensions.Logging.ILogger<GameController>);
-            _errorMock = new Mock<BaseError>();
-            _controller = new GameController(_gameRepoMock.Object, _loggerMock.Object, _errorMock.Object);
+            _controller = new GameController(_gameRepoMock.Object, _loggerMock.Object);
         }
 
         [TestMethod]
         public void ReturnsOkWhenGettingAllGames()
         {
             var games = new List<Game>
-        {
-            new Game { Id = 1, Nome = "Game1", Produtora = "Prod1", Descricao = "Desc1", DataLancamento = DateTime.Today, Preco = 10 }
-        };
+            {
+                new Game { Id = 1, Nome = "Game1", Produtora = "Prod1", Descricao = "Desc1", DataLancamento = DateTime.Today, Preco = 10 }
+            };
             _gameRepoMock.Setup(r => r.ObterTodos()).Returns(games);
 
             var result = _controller.get();
@@ -49,7 +49,9 @@ namespace TEST_FCG._Tests_.Controllers
         public void ReturnsBadRequestIfExceptionWhenGettingAllGames()
         {
             _gameRepoMock.Setup(r => r.ObterTodos()).Throws(new Exception("fail"));
+
             var result = _controller.get();
+
             var badRequest = result as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
             Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));

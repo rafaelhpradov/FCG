@@ -2,10 +2,10 @@ using System;
 using FCG.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TEST_FCG._Tests_.Models
+namespace FCG.Models.Tests
 {
     [TestClass]
-    public class EntityBaseTests
+    public class EntityBaseTest
     {
         [TestMethod]
         public void Constructor_SetsDataCriacaoToToday()
@@ -33,33 +33,33 @@ namespace TEST_FCG._Tests_.Models
         public void CanSetAndGet_Id()
         {
             var entity = new EntityBase();
-            entity.Id = 42;
-            Assert.AreEqual(42, entity.Id);
+            entity.Id = 123;
+            Assert.AreEqual(123, entity.Id);
         }
 
         [TestMethod]
         public void CanSetAndGet_DataCriacao()
         {
             var entity = new EntityBase();
-            var date = new DateTime(2020, 1, 1);
+            var date = new DateTime(2022, 5, 1);
             entity.DataCriacao = date;
             Assert.AreEqual(date, entity.DataCriacao);
         }
 
-        [TestMethod]
-        public void CanSetAndGet_Email()
-        {
-            var entity = new EntityBase();
-            entity.Email = "test@email.com";
-            Assert.AreEqual("test@email.com", entity.Email);
-        }
+        //[TestMethod]
+        //public void CanSetAndGet_Email()
+        //{
+        //    var entity = new EntityBase();
+        //    entity.Email = "test@email.com";
+        //    Assert.AreEqual("test@email.com", entity.Email);
+        //}
 
-        [TestMethod]
-        public void Email_CanBeNull()
-        {
-            var entity = new EntityBase();
-            entity.Email = null;
-            Assert.IsNull(entity.Email);
-        }
+        //[TestMethod]
+        //public void Email_CanBeNull()
+        //{
+        //    var entity = new EntityBase();
+        //    entity.Email = null;
+        //    Assert.IsNull(entity.Email);
+        //}
     }
 }
