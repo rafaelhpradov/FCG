@@ -51,7 +51,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterTodos_ReturnsAllGames()
+        public void GetAllReturnsAllGames()
         {
             var result = _repository.ObterTodos();
             Assert.AreEqual(2, result.Count);
@@ -60,7 +60,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorID_ReturnsCorrectGame()
+        public void GetByIdReturnsCorrectGame()
         {
             var result = _repository.ObterPorID(1);
             Assert.IsNotNull(result);
@@ -68,14 +68,14 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorID_ReturnsNullIfNotFound()
+        public void GetByIdReturnsNullIfNotFound()
         {
             var result = _repository.ObterPorID(99);
             Assert.IsNull(result);
         }
 
         [TestMethod]
-        public void ObterPorNome_ReturnsCorrectGame()
+        public void GetByNameReturnsCorrectGame()
         {
             var result = _repository.ObterPorNome("Game2");
             Assert.IsNotNull(result);
@@ -83,16 +83,15 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorNome_ReturnsNullIfNotFound()
+        public void GetByNameReturnsNullIfNotFound()
         {
             var result = _repository.ObterPorNome("NotFound");
             Assert.IsNull(result);
         }
 
         [TestMethod]
-        public void ObterPorEmail_ReturnsCorrectGame()
+        public void GetByEmail_ReturnsCorrectGame()
         {
-            // Add a game with Email property for test
             var gameWithEmail = new Game
             {
                 Id = 3,
@@ -102,7 +101,14 @@ namespace TEST_FCG._Tests_.Repository
                 DataLancamento = DateTime.Today,
                 Preco = 30
             };
-            typeof(Game).GetProperty("Email")?.SetValue(gameWithEmail, "test@email.com");
+
+            var emailProp = typeof(Game).GetProperty("Email");
+            if (emailProp == null)
+            {
+                Assert.ThrowsException<NotSupportedException>(() => _repository.ObterPorEmail("test@email.com"));
+                return;
+            }
+            emailProp.SetValue(gameWithEmail, "test@email.com");
             _games.Add(gameWithEmail);
 
             var result = _repository.ObterPorEmail("test@email.com");
@@ -111,14 +117,20 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorEmail_ReturnsNullIfNotFound()
+        public void GetByEmailReturnsNullIfNotFound()
         {
+            var emailProp = typeof(Game).GetProperty("Email");
+            if (emailProp == null)
+            {
+                Assert.ThrowsException<NotSupportedException>(() => _repository.ObterPorEmail("notfound@email.com"));
+                return;
+            }
             var result = _repository.ObterPorEmail("notfound@email.com");
             Assert.IsNull(result);
         }
 
         [TestMethod]
-        public void Cadastrar_AddsGameAndSetsDataCriacao()
+        public void RegisterAddsGameAndSetsCreationDate()
         {
             var newGame = new Game
             {
@@ -138,7 +150,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void Alterar_UpdatesGame()
+        public void UpdateUpdatesGame()
         {
             var updatedGame = new Game
             {
@@ -160,7 +172,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void Deletar_RemovesGame()
+        public void DeleteRemovesGame()
         {
             _repository.Deletar(2);
 

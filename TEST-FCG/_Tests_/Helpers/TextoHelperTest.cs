@@ -7,7 +7,7 @@ namespace TEST_FCG._Tests_.Helpers
     [TestClass]
     public class TextoHelperTest
     {
-        private TextoHelper _helper;
+        private TextoHelper? _helper;
 
         [TestInitialize]
         public void Setup()
@@ -19,7 +19,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsTrueForValidEmail()
         {
             var email = "user@example.com";
-            var result = _helper.EmailValido(email);
+            var result = _helper!.EmailValido(email);
             Assert.IsTrue(result);
         }
 
@@ -27,7 +27,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseForInvalidEmail_NoAt()
         {
             var email = "userexample.com";
-            var result = _helper.EmailValido(email);
+            var result = _helper!.EmailValido(email);
             Assert.IsFalse(result);
         }
 
@@ -35,7 +35,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseForInvalidEmail_NoDomain()
         {
             var email = "user@";
-            var result = _helper.EmailValido(email);
+            var result = _helper!.EmailValido(email);
             Assert.IsFalse(result);
         }
 
@@ -43,23 +43,23 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseForEmptyString()
         {
             var email = "";
-            var result = _helper.EmailValido(email);
+            var result = _helper!.EmailValido(email);
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void ReturnsFalseForNull()
         {
-            string email = null;
-            var result = _helper.EmailValido(email);
+            string? email = null;
+            var result = _helper!.EmailValido(email!);
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void ReturnsTrueForValidPassword()
         {
-            var senha = "Abc123!";
-            var result = _helper.SenhaValida(senha);
+            var senha = "Abcdef1!";
+            var result = _helper!.SenhaValida(senha);
             Assert.IsTrue(result);
         }
 
@@ -67,7 +67,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseIfTooShort()
         {
             var senha = "A1b!";
-            var result = _helper.SenhaValida(senha);
+            var result = _helper!.SenhaValida(senha);
             Assert.IsFalse(result);
         }
 
@@ -75,7 +75,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseIfNoUppercase()
         {
             var senha = "abc123!";
-            var result = _helper.SenhaValida(senha);
+            var result = _helper!.SenhaValida(senha);
             Assert.IsFalse(result);
         }
 
@@ -83,7 +83,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseIfNoLowercase()
         {
             var senha = "ABC123!";
-            var result = _helper.SenhaValida(senha);
+            var result = _helper!.SenhaValida(senha);
             Assert.IsFalse(result);
         }
 
@@ -91,7 +91,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseIfNoNumber()
         {
             var senha = "Abcdef!";
-            var result = _helper.SenhaValida(senha);
+            var result = _helper!.SenhaValida(senha);
             Assert.IsFalse(result);
         }
 
@@ -99,7 +99,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseIfNoSpecialChar()
         {
             var senha = "Abc1234";
-            var result = _helper.SenhaValida(senha);
+            var result = _helper!.SenhaValida(senha);
             Assert.IsFalse(result);
         }
 
@@ -107,15 +107,15 @@ namespace TEST_FCG._Tests_.Helpers
         public void ReturnsFalseForSenhaEmptyString()
         {
             var senha = "";
-            var result = _helper.SenhaValida(senha);
+            var result = _helper!.SenhaValida(senha);
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void ReturnsFalseForSenhaNull()
         {
-            string senha = null;
-            var result = _helper.SenhaValida(senha);
+            string? senha = null;
+            var result = _helper!.SenhaValida(senha!);
             Assert.IsFalse(result);
         }
 
@@ -123,7 +123,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void FalseReturnsTrueForTipo1()
         {
             short tipo = 1;
-            var result = _helper.TipoUsuarioValido(tipo);
+            var result = _helper!.TipoUsuarioValido(tipo);
             Assert.IsTrue(result);
         }
 
@@ -131,7 +131,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void FalseReturnsTrueForTipo2()
         {
             short tipo = 2;
-            var result = _helper.TipoUsuarioValido(tipo);
+            var result = _helper!.TipoUsuarioValido(tipo);
             Assert.IsTrue(result);
         }
 
@@ -139,7 +139,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void FalseReturnsFalseForTipo0()
         {
             short tipo = 0;
-            var result = _helper.TipoUsuarioValido(tipo);
+            var result = _helper!.TipoUsuarioValido(tipo);
             Assert.IsFalse(result);
         }
 
@@ -147,7 +147,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void FalseReturnsFalseForTipo3()
         {
             short tipo = 3;
-            var result = _helper.TipoUsuarioValido(tipo);
+            var result = _helper!.TipoUsuarioValido(tipo);
             Assert.IsFalse(result);
         }
 
@@ -155,7 +155,7 @@ namespace TEST_FCG._Tests_.Helpers
         public void FalseReturnsFalseForNegativeTipo()
         {
             short tipo = -1;
-            var result = _helper.TipoUsuarioValido(tipo);
+            var result = _helper!.TipoUsuarioValido(tipo);
             Assert.IsFalse(result);
         }
     }

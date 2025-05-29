@@ -7,7 +7,7 @@ namespace TEST_FCG._Tests_.Models
     public class ErroResponseTests
     {
         [TestMethod]
-        public void CanSetAndGet_StatusCode()
+        public void CanSetAndGetStatusCode()
         {
             var error = new ErroResponse();
             error.StatusCode = 404;
@@ -15,7 +15,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_Erro()
+        public void CanSetAndGetErro()
         {
             var error = new ErroResponse();
             error.Erro = "Not Found";
@@ -23,7 +23,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_Detalhe()
+        public void CanSetAndGetDetalhe()
         {
             var error = new ErroResponse();
             error.Detalhe = "Resource does not exist";
@@ -31,7 +31,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void ToString_ReturnsExpectedFormat()
+        public void ReturnsExpectedFormat()
         {
             var error = new ErroResponse
             {

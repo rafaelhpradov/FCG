@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using FCG.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FCG.Models.Tests
+namespace TEST_FCG._Tests_.Models
 {
     [TestClass]
     public class GameTest
     {
         [TestMethod]
-        public void CanSetAndGet_Produtora()
+        public void CanSetAndGetProdutora()
         {
             var game = new Game
             {
@@ -23,7 +23,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void CanSetAndGet_Descricao()
+        public void CanSetAndGetDescricao()
         {
             var game = new Game
             {
@@ -37,7 +37,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void CanSetAndGet_Preco()
+        public void CanSetAndGetPreco()
         {
             var game = new Game
             {
@@ -51,7 +51,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void CanSetAndGet_DataLancamento()
+        public void CanSetAndGetDataLancamento()
         {
             var date = new DateTime(2023, 12, 31);
             var game = new Game
@@ -66,7 +66,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void CanSetAndGet_Pedidos()
+        public void CanSetAndGetPedidos()
         {
             var pedidos = new List<Pedido>
             {
@@ -85,7 +85,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void InheritsFrom_EntityBase()
+        public void InheritsFromEntityBase()
         {
             var game = new Game
             {

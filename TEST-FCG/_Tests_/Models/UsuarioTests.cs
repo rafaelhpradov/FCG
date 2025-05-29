@@ -9,7 +9,7 @@ namespace TEST_FCG._Tests_.Models
     public class UsuarioTests
     {
         [TestMethod]
-        public void CanSetAndGet_Nome()
+        public void CanSetAndGetName()
         {
             var usuario = new Usuario
             {
@@ -23,7 +23,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_Email()
+        public void CanSetAndGetEmail()
         {
             var usuario = new Usuario
             {
@@ -37,7 +37,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_Senha()
+        public void CanSetAndGetPassword()
         {
             var usuario = new Usuario
             {
@@ -51,7 +51,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_DataNascimento()
+        public void CanSetAndGetBirthDate()
         {
             var usuario = new Usuario
             {
@@ -66,7 +66,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_Endereco()
+        public void CanSetAndGetAddress()
         {
             var usuario = new Usuario
             {
@@ -80,7 +80,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_TipoUsuario()
+        public void CanSetAndGetUserType()
         {
             var usuario = new Usuario
             {
@@ -94,7 +94,7 @@ namespace TEST_FCG._Tests_.Models
         }
 
         [TestMethod]
-        public void CanSetAndGet_Pedidos()
+        public void CanSetAndGetOrders()
         {
             var pedidos = new List<Pedido>
             {
@@ -110,14 +110,14 @@ namespace TEST_FCG._Tests_.Models
                 Pedidos = pedidos
             };
 
-            var pedidosList = usuario.Pedidos.ToList(); // Convert ICollection<Pedido> to List<Pedido>
+            var pedidosList = usuario.Pedidos.ToList(); // Convert ICollection<Pedido> to List<Pedido>  
             Assert.AreEqual(2, pedidosList.Count);
             Assert.AreEqual(1, pedidosList[0].UsuarioId);
             Assert.AreEqual(2, pedidosList[1].GameId);
         }
 
         [TestMethod]
-        public void CanSetAndGet_BaseProperties()
+        public void CanSetAndGetBaseProperties()
         {
             var usuario = new Usuario
             {

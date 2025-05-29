@@ -2,13 +2,13 @@ using System;
 using FCG.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FCG.Models.Tests
+namespace TEST_FCG._Tests_.Models
 {
     [TestClass]
     public class PedidoTest
     {
         [TestMethod]
-        public void CanSetAndGet_UsuarioId()
+        public void CanSetAndGetUsuarioId()
         {
             var pedido = new Pedido
             {
@@ -19,7 +19,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void CanSetAndGet_GameId()
+        public void CanSetAndGetGameId()
         {
             var pedido = new Pedido
             {
@@ -30,7 +30,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void CanSetAndGet_Usuario()
+        public void CanSetAndGetUsuario()
         {
             var usuario = new Usuario
             {
@@ -53,7 +53,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void CanSetAndGet_Game()
+        public void CanSetAndGetGame()
         {
             var game = new Game
             {
@@ -74,7 +74,7 @@ namespace FCG.Models.Tests
         }
 
         [TestMethod]
-        public void InheritsFrom_EntityBase()
+        public void InheritsFromEntityBase()
         {
             var pedido = new Pedido
             {

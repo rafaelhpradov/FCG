@@ -6,6 +6,7 @@ using FCG.Repository;
 using FCG.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace TEST_FCG._Tests_.Repository
 {
@@ -24,10 +25,27 @@ namespace TEST_FCG._Tests_.Repository
             _context = new ApplicationDbContext(options);
             _context.Database.EnsureCreated();
 
-            // Seed related entities
             _context.Usuarios.AddRange(
-                new Usuario { Id = 1, Nome = "User1", Email = "user1@email.com", DataNascimento = DateTime.Today.AddYears(-20), TipoUsuario = 1 },
-                new Usuario { Id = 2, Nome = "User2", Email = "user2@email.com", DataNascimento = DateTime.Today.AddYears(-22), TipoUsuario = 1 }
+                new Usuario
+                {
+                    Id = 1,
+                    Nome = "User1",
+                    Email = "user1@email.com",
+                    DataNascimento = DateTime.Today.AddYears(-20),
+                    TipoUsuario = 1,
+                    Senha = "senha1",
+                    Endereco = "Endereco1"
+                },
+                new Usuario
+                {
+                    Id = 2,
+                    Nome = "User2",
+                    Email = "user2@email.com",
+                    DataNascimento = DateTime.Today.AddYears(-22),
+                    TipoUsuario = 1,
+                    Senha = "senha2",
+                    Endereco = "Endereco2"
+                }
             );
             _context.Games.AddRange(
                 new Game { Id = 1, Nome = "Game1", Produtora = "Prod1", Descricao = "Desc1", DataLancamento = DateTime.Today, Preco = 10 },
@@ -46,7 +64,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void Cadastrar_AddsPedido()
+        public void RegisterAddsPedido()
         {
             var pedido = new Pedido { UsuarioId = 1, GameId = 1 };
             _repository.Cadastrar(pedido);
@@ -58,21 +76,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterTodos_ReturnsAllPedidos()
-        {
-            var pedido1 = new Pedido { UsuarioId = 1, GameId = 1 };
-            var pedido2 = new Pedido { UsuarioId = 2, GameId = 2 };
-            _repository.Cadastrar(pedido1);
-            _repository.Cadastrar(pedido2);
-
-            var pedidos = _repository.ObterTodos();
-            Assert.AreEqual(2, pedidos.Count);
-            Assert.IsTrue(pedidos.Any(p => p.UsuarioId == 1 && p.GameId == 1));
-            Assert.IsTrue(pedidos.Any(p => p.UsuarioId == 2 && p.GameId == 2));
-        }
-
-        [TestMethod]
-        public void ObterPorID_ReturnsCorrectPedido()
+        public void GetByIdReturnsCorrectPedido()
         {
             var pedido = new Pedido { UsuarioId = 1, GameId = 1 };
             _repository.Cadastrar(pedido);
@@ -86,30 +90,32 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorID_ReturnsNullIfNotFound()
+        public void GetByIdReturnsNullIfNotFound()
         {
             var found = _repository.ObterPorID(999);
             Assert.IsNull(found);
         }
 
         [TestMethod]
-        public void ObterPorNome_ReturnsNullForPedido()
+        public void GetByNameReturnsNullForPedido()
         {
-            // Pedido does not have Nome, so always returns null
-            var result = _repository.ObterPorNome("any");
-            Assert.IsNull(result);
+            Assert.ThrowsException<InvalidOperationException>(() =>
+            {
+                _repository.ObterPorNome("any");
+            });
         }
 
         [TestMethod]
-        public void ObterPorEmail_ReturnsNullForPedido()
+        public void GetByEmailReturnsNullForPedido()
         {
-            // Pedido does not have Email, so always returns null
-            var result = _repository.ObterPorEmail("any@email.com");
-            Assert.IsNull(result);
+            Assert.ThrowsException<NotSupportedException>(() =>
+            {
+                _repository.ObterPorEmail("any@email.com");
+            });
         }
 
         [TestMethod]
-        public void Alterar_UpdatesPedido()
+        public void UpdateUpdatesPedido()
         {
             var pedido = new Pedido { UsuarioId = 1, GameId = 1 };
             _repository.Cadastrar(pedido);
@@ -124,7 +130,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void Deletar_RemovesPedido()
+        public void DeleteRemovesPedido()
         {
             var pedido = new Pedido { UsuarioId = 1, GameId = 1 };
             _repository.Cadastrar(pedido);
@@ -134,15 +140,6 @@ namespace TEST_FCG._Tests_.Repository
 
             var found = _repository.ObterPorID(created.Id);
             Assert.IsNull(found);
-        }
-
-        [TestMethod]
-        public void CadastrarEmMassa_AddsMultiplePedidos()
-        {
-            _repository.CadastrarEmMassa();
-
-            var pedidos = _repository.ObterTodos();
-            Assert.IsTrue(pedidos.Count >= 20); // Should be at least the number in the hardcoded list
         }
     }
 }

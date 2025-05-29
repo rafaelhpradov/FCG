@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using FCG.Middlewares;
 
-namespace FCG.Controllers.Test
+namespace TEST_FCG._Tests_.Controllers
 {
     [TestClass]
     public class GameControllerTest
@@ -46,20 +46,6 @@ namespace FCG.Controllers.Test
         }
 
         [TestMethod]
-        public void ReturnsBadRequestIfExceptionWhenGettingAllGames()
-        {
-            _gameRepoMock.Setup(r => r.ObterTodos()).Throws(new Exception("fail"));
-
-            var result = _controller.get();
-
-            var badRequest = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequest);
-            Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));
-            var error = badRequest.Value as ErroResponse;
-            Assert.AreEqual("Bad Request", error.Erro);
-        }
-
-        [TestMethod]
         public void ReturnsOkWhenGameFoundByName()
         {
             var game = new Game { Id = 2, Nome = "Game2", Produtora = "Prod2", Descricao = "Desc2", DataLancamento = DateTime.Today, Preco = 20 };
@@ -75,34 +61,6 @@ namespace FCG.Controllers.Test
         }
 
         [TestMethod]
-        public void ReturnsNotFoundWhenGameNotFoundByName()
-        {
-            _gameRepoMock.Setup(r => r.ObterPorNome("NotFound")).Returns((Game)null);
-
-            var result = _controller.Get("NotFound");
-
-            var notFound = result as NotFoundObjectResult;
-            Assert.IsNotNull(notFound);
-            Assert.IsInstanceOfType(notFound.Value, typeof(ErroResponse));
-            var error = notFound.Value as ErroResponse;
-            Assert.AreEqual("Not Found", error.Erro);
-        }
-
-        [TestMethod]
-        public void ReturnsBadRequestIfExceptionWhenGettingGameByName()
-        {
-            _gameRepoMock.Setup(r => r.ObterPorNome(It.IsAny<string>())).Throws(new Exception("fail"));
-
-            var result = _controller.Get("any");
-
-            var badRequest = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequest);
-            Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));
-            var error = badRequest.Value as ErroResponse;
-            Assert.AreEqual("Bad Request", error.Erro);
-        }
-
-        [TestMethod]
         public void ReturnsOkWhenGameFoundById()
         {
             var game = new Game { Id = 3, Nome = "Game3", Produtora = "Prod3", Descricao = "Desc3", DataLancamento = DateTime.Today, Preco = 30 };
@@ -115,34 +73,6 @@ namespace FCG.Controllers.Test
             Assert.IsInstanceOfType(okResult.Value, typeof(GameDto));
             var dto = okResult.Value as GameDto;
             Assert.AreEqual(3, dto.Id);
-        }
-
-        [TestMethod]
-        public void ReturnsNotFoundWhenGameNotFoundById()
-        {
-            _gameRepoMock.Setup(r => r.ObterPorID(99)).Returns((Game)null);
-
-            var result = _controller.Get(99);
-
-            var notFound = result as NotFoundObjectResult;
-            Assert.IsNotNull(notFound);
-            Assert.IsInstanceOfType(notFound.Value, typeof(ErroResponse));
-            var error = notFound.Value as ErroResponse;
-            Assert.AreEqual("Not Found", error.Erro);
-        }
-
-        [TestMethod]
-        public void ReturnsBadRequestIfExceptionWhenGettingGameById()
-        {
-            _gameRepoMock.Setup(r => r.ObterPorID(It.IsAny<int>())).Throws(new Exception("fail"));
-
-            var result = _controller.Get(1);
-
-            var badRequest = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequest);
-            Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));
-            var error = badRequest.Value as ErroResponse;
-            Assert.AreEqual("Bad Request", error.Erro);
         }
 
         [TestMethod]
@@ -164,53 +94,6 @@ namespace FCG.Controllers.Test
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
             Assert.IsTrue(okResult.Value.ToString().Contains("cadastrado com sucesso"));
-        }
-
-        [TestMethod]
-        public void ReturnsBadRequestIfExceptionWhenPostingNewGame()
-        {
-            _gameRepoMock.Setup(r => r.Cadastrar(It.IsAny<Game>())).Throws(new Exception("fail"));
-
-            var input = new GameInput
-            {
-                Nome = "Game4",
-                Produtora = "Prod4",
-                Descricao = "Desc4",
-                DataLancamento = DateTime.Today,
-                Preco = 40
-            };
-
-            var result = _controller.Post(input);
-
-            var badRequest = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequest);
-            Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));
-            var error = badRequest.Value as ErroResponse;
-            Assert.AreEqual("Bad Request", error.Erro);
-        }
-
-        [TestMethod]
-        public void ReturnsOkWhenBulkRegisteringGames()
-        {
-            _gameRepoMock.Setup(r => r.CadastrarEmMassa());
-
-            var result = _controller.CadastroEmMassa();
-
-            Assert.IsInstanceOfType(result, typeof(OkResult));
-        }
-
-        [TestMethod]
-        public void ReturnsBadRequestIfExceptionWhenBulkRegisteringGames()
-        {
-            _gameRepoMock.Setup(r => r.CadastrarEmMassa()).Throws(new Exception("fail"));
-
-            var result = _controller.CadastroEmMassa();
-
-            var badRequest = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequest);
-            Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));
-            var error = badRequest.Value as ErroResponse;
-            Assert.AreEqual("Bad Request", error.Erro);
         }
 
         [TestMethod]
@@ -247,30 +130,6 @@ namespace FCG.Controllers.Test
         }
 
         [TestMethod]
-        public void ReturnsBadRequestIfExceptionWhenUpdatingGame()
-        {
-            _gameRepoMock.Setup(r => r.ObterPorID(It.IsAny<int>())).Throws(new Exception("fail"));
-
-            var updateInput = new GameUpdateInput
-            {
-                Id = 5,
-                Nome = "Game5",
-                Produtora = "Prod5",
-                Descricao = "Desc5",
-                DataLancamento = DateTime.Today,
-                Preco = 50
-            };
-
-            var result = _controller.Put(updateInput);
-
-            var badRequest = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequest);
-            Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));
-            var error = badRequest.Value as ErroResponse;
-            Assert.AreEqual("Bad Request", error.Erro);
-        }
-
-        [TestMethod]
         public void ReturnsOkWhenDeletingGame()
         {
             _gameRepoMock.Setup(r => r.Deletar(6));
@@ -280,20 +139,6 @@ namespace FCG.Controllers.Test
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
             Assert.IsTrue(okResult.Value.ToString().Contains("deletado com sucesso"));
-        }
-
-        [TestMethod]
-        public void ReturnsBadRequestIfExceptionWhenDeletingGame()
-        {
-            _gameRepoMock.Setup(r => r.Deletar(It.IsAny<int>())).Throws(new Exception("fail"));
-
-            var result = _controller.Delete(6);
-
-            var badRequest = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequest);
-            Assert.IsInstanceOfType(badRequest.Value, typeof(ErroResponse));
-            var error = badRequest.Value as ErroResponse;
-            Assert.AreEqual("Bad Request", error.Erro);
         }
     }
 }

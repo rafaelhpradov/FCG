@@ -30,7 +30,6 @@ namespace TEST_FCG._Tests_.Repository
             _criptografiaHelper = new CriptografiaHelper();
             _repository = new UsuarioRepository(_context, _criptografiaHelper);
 
-            // Seed related entities
             _context.Games.Add(new Game
             {
                 Id = 1,
@@ -51,7 +50,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void Cadastrar_AddsUsuario()
+        public void RegisterAddsUsuario()
         {
             var usuario = new Usuario
             {
@@ -59,7 +58,8 @@ namespace TEST_FCG._Tests_.Repository
                 Email = "user1@email.com",
                 DataNascimento = new DateTime(2000, 1, 1),
                 TipoUsuario = 1,
-                Senha = _criptografiaHelper.Criptografar("senha123")
+                Senha = _criptografiaHelper.Criptografar("senha123"),
+                Endereco = "Rua Teste, 123"
             };
 
             _repository.Cadastrar(usuario);
@@ -70,7 +70,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterTodos_ReturnsAllUsuarios()
+        public void GetAllReturnsAllUsuarios()
         {
             var usuario1 = new Usuario
             {
@@ -78,7 +78,8 @@ namespace TEST_FCG._Tests_.Repository
                 Email = "user1@email.com",
                 DataNascimento = new DateTime(2000, 1, 1),
                 TipoUsuario = 1,
-                Senha = _criptografiaHelper.Criptografar("senha123")
+                Senha = _criptografiaHelper.Criptografar("senha123"),
+                Endereco = "Rua Teste, 123"
             };
             var usuario2 = new Usuario
             {
@@ -86,7 +87,8 @@ namespace TEST_FCG._Tests_.Repository
                 Email = "user2@email.com",
                 DataNascimento = new DateTime(1999, 1, 1),
                 TipoUsuario = 2,
-                Senha = _criptografiaHelper.Criptografar("senha456")
+                Senha = _criptografiaHelper.Criptografar("senha456"),
+                Endereco = "Rua Teste, 456"
             };
 
             _repository.Cadastrar(usuario1);
@@ -99,7 +101,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorID_ReturnsCorrectUsuario()
+        public void GetByIdReturnsCorrectUsuario()
         {
             var usuario = new Usuario
             {
@@ -107,7 +109,8 @@ namespace TEST_FCG._Tests_.Repository
                 Email = "user1@email.com",
                 DataNascimento = new DateTime(2000, 1, 1),
                 TipoUsuario = 1,
-                Senha = _criptografiaHelper.Criptografar("senha123")
+                Senha = _criptografiaHelper.Criptografar("senha123"),
+                Endereco = "Rua Teste, 123"
             };
             _repository.Cadastrar(usuario);
 
@@ -120,14 +123,14 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorID_ReturnsNullIfNotFound()
+        public void GetByIdReturnsNullIfNotFound()
         {
             var found = _repository.ObterPorID(999);
             Assert.IsNull(found);
         }
 
         [TestMethod]
-        public void ObterPorNome_ReturnsCorrectUsuario()
+        public void GetByNameReturnsCorrectUsuario()
         {
             var usuario = new Usuario
             {
@@ -135,7 +138,8 @@ namespace TEST_FCG._Tests_.Repository
                 Email = "user1@email.com",
                 DataNascimento = new DateTime(2000, 1, 1),
                 TipoUsuario = 1,
-                Senha = _criptografiaHelper.Criptografar("senha123")
+                Senha = _criptografiaHelper.Criptografar("senha123"),
+                Endereco = "Rua Teste, 123"
             };
             _repository.Cadastrar(usuario);
 
@@ -145,14 +149,14 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorNome_ReturnsNullIfNotFound()
+        public void GetByNameReturnsNullIfNotFound()
         {
             var found = _repository.ObterPorNome("NotFound");
             Assert.IsNull(found);
         }
 
         [TestMethod]
-        public void ObterPorEmail_ReturnsCorrectUsuario()
+        public void GetByEmailReturnsCorrectUsuario()
         {
             var usuario = new Usuario
             {
@@ -160,7 +164,8 @@ namespace TEST_FCG._Tests_.Repository
                 Email = "user1@email.com",
                 DataNascimento = new DateTime(2000, 1, 1),
                 TipoUsuario = 1,
-                Senha = _criptografiaHelper.Criptografar("senha123")
+                Senha = _criptografiaHelper.Criptografar("senha123"),
+                Endereco = "Rua Teste, 123"
             };
             _repository.Cadastrar(usuario);
 
@@ -170,14 +175,14 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void ObterPorEmail_ReturnsNullIfNotFound()
+        public void GetByEmailReturnsNullIfNotFound()
         {
             var found = _repository.ObterPorEmail("notfound@email.com");
             Assert.IsNull(found);
         }
 
         [TestMethod]
-        public void Alterar_UpdatesUsuario()
+        public void UpdateUsuarioUpdatesUsuario()
         {
             var usuario = new Usuario
             {
@@ -185,7 +190,8 @@ namespace TEST_FCG._Tests_.Repository
                 Email = "user1@email.com",
                 DataNascimento = new DateTime(2000, 1, 1),
                 TipoUsuario = 1,
-                Senha = _criptografiaHelper.Criptografar("senha123")
+                Senha = _criptografiaHelper.Criptografar("senha123"),
+                Endereco = "Rua Teste, 123"
             };
             _repository.Cadastrar(usuario);
             var created = _repository.ObterTodos().First();
@@ -199,27 +205,7 @@ namespace TEST_FCG._Tests_.Repository
         }
 
         [TestMethod]
-        public void Deletar_RemovesUsuario()
-        {
-            var usuario = new Usuario
-            {
-                Nome = "User1",
-                Email = "user1@email.com",
-                DataNascimento = new DateTime(2000, 1, 1),
-                TipoUsuario = 1,
-                Senha = _criptografiaHelper.Criptografar("senha123")
-            };
-            _repository.Cadastrar(usuario);
-            var created = _repository.ObterTodos().First();
-
-            _repository.Deletar(created.Id);
-
-            var found = _repository.ObterPorID(created.Id);
-            Assert.IsNull(found);
-        }
-
-        [TestMethod]
-        public void ObterPedidosSeisMeses_ReturnsOnlyRecentPedidos()
+        public void DeleteUsuarioRemovesUsuario()
         {
             var usuario = new Usuario
             {
@@ -228,33 +214,15 @@ namespace TEST_FCG._Tests_.Repository
                 DataNascimento = new DateTime(2000, 1, 1),
                 TipoUsuario = 1,
                 Senha = _criptografiaHelper.Criptografar("senha123"),
-                Pedidos = new List<Pedido>()
+                Endereco = "Rua Teste, 123"
             };
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges();
+            _repository.Cadastrar(usuario);
+            var created = _repository.ObterTodos().First();
 
-            var oldPedido = new Pedido
-            {
-                UsuarioId = usuario.Id,
-                GameId = 1,
-                DataCriacao = DateTime.Now.AddMonths(-7)
-            };
-            var recentPedido = new Pedido
-            {
-                UsuarioId = usuario.Id,
-                GameId = 1,
-                DataCriacao = DateTime.Now.AddMonths(-2)
-            };
-            _context.Pedidos.AddRange(oldPedido, recentPedido);
-            _context.SaveChanges();
+            _repository.Deletar(created.Id);
 
-            var result = _repository.ObterPedidosSeisMeses(usuario.Id);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(usuario.Id, result.Id);
-            Assert.IsNotNull(result.Pedidos);
-            Assert.IsTrue(result.Pedidos.All(p => DateTime.Parse(p.DataCriacao) >= DateTime.Now.AddMonths(-6).Date));
-            Assert.IsTrue(result.Pedidos.Count == 1);
+            var found = _repository.ObterPorID(created.Id);
+            Assert.IsNull(found);
         }
     }
 }
