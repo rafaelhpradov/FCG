@@ -1,228 +1,239 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FCG.Models;
-using FCG.Repository;
-using FCG.Infrastructure;
-using FCG.Helpers;
 using FCG.DTOs;
-using Microsoft.EntityFrameworkCore;
+using FCG.Interfaces;
+using FCG.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace TEST_FCG._Tests_.Repository
 {
-    //[TestClass]
-    //public class UsuarioRepositoryTest
-    //{
-    //    private ApplicationDbContext _context;
-    //    private UsuarioRepository _repository;
-    //    private CriptografiaHelper _criptografiaHelper;
+    [TestClass]
+    public class UsuarioRepositoryTest
+    {
+        private Mock<IUsuarioRepository> _usuarioRepoMock;
+        private List<Usuario> _usuarios;
+        private UsuarioDto _usuarioDtoSample;
 
-    //    [TestInitialize]
-    //    public void Setup()
-    //    {
-    //        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-    //            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-    //            .Options;
-    //        _context = new ApplicationDbContext(options);
-    //        _context.Database.EnsureCreated();
+        [TestInitialize]
+        public void Setup()
+        {
+            _usuarios = new List<Usuario>
+            {
+                new Usuario
+                {
+                    Id = 1,
+                    Nome = "Wilson",
+                    Email = "wilson.carvalhais@gmail.com",
+                    Endereco = "Rua ABC, Rio de Janeiro, RJ",
+                    Senha = "encrypted",
+                    DataNascimento = new DateTime(1981, 6, 24),
+                    TipoUsuario = 1,
+                    Pedidos = new List<Pedido>()
+                },
+                new Usuario
+                {
+                    Id = 2,
+                    Nome = "Camila",
+                    Email = "camila.rocha@example.com",
+                    Endereco = "Rua A, Rio de Janeiro, RJ",
+                    Senha = "encrypted",
+                    DataNascimento = new DateTime(1992, 3, 15),
+                    TipoUsuario = 2,
+                    Pedidos = new List<Pedido>()
+                }
+            };
 
-    //        _criptografiaHelper = new CriptografiaHelper();
-    //        _repository = new UsuarioRepository(_context, _criptografiaHelper);
+            _usuarioDtoSample = new UsuarioDto
+            {
+                Id = 1,
+                Nome = "Wilson",
+                Email = "wilson.carvalhais@gmail.com",
+                Endereco = "Rua ABC, Rio de Janeiro, RJ",
+                Senha = "encrypted",
+                DataNascimento = "1981-06-24",
+                TipoUsuario = 1,
+                DataCriacao = DateTime.Now.ToString("yyyy-MM-dd"),
+                Pedidos = new List<PedidoDto>()
+            };
 
-    //        _context.Games.Add(new Game
-    //        {
-    //            Id = 1,
-    //            Nome = "Game1",
-    //            Produtora = "Prod1",
-    //            Descricao = "Desc1",
-    //            DataLancamento = DateTime.Today,
-    //            Preco = 10
-    //        });
-    //        _context.SaveChanges();
-    //    }
+            _usuarioRepoMock = new Mock<IUsuarioRepository>();
+        }
 
-    //    [TestCleanup]
-    //    public void Cleanup()
-    //    {
-    //        _context.Database.EnsureDeleted();
-    //        _context.Dispose();
-    //    }
+        [TestMethod]
+        public void ObterTodos_ReturnsAllUsuarios()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterTodos()).Returns(_usuarios);
 
-    //    [TestMethod]
-    //    public void RegisterAddsUsuario()
-    //    {
-    //        var usuario = new Usuario
-    //        {
-    //            Nome = "User1",
-    //            Email = "user1@email.com",
-    //            DataNascimento = new DateTime(2000, 1, 1),
-    //            TipoUsuario = 1,
-    //            Senha = _criptografiaHelper.Criptografar("senha123"),
-    //            Endereco = "Rua Teste, 123"
-    //        };
+            var result = _usuarioRepoMock.Object.ObterTodos();
 
-    //        _repository.Cadastrar(usuario);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.IsTrue(result.Any(u => u.Nome == "Wilson"));
+            Assert.IsTrue(result.Any(u => u.Nome == "Camila"));
+        }
 
-    //        var usuarios = _repository.ObterTodos();
-    //        Assert.AreEqual(1, usuarios.Count);
-    //        Assert.AreEqual("User1", usuarios[0].Nome);
-    //    }
+        [TestMethod]
+        public void ObterPorID_ReturnsCorrectUsuario()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPorID(1)).Returns(_usuarios[0]);
 
-    //    [TestMethod]
-    //    public void GetAllReturnsAllUsuarios()
-    //    {
-    //        var usuario1 = new Usuario
-    //        {
-    //            Nome = "User1",
-    //            Email = "user1@email.com",
-    //            DataNascimento = new DateTime(2000, 1, 1),
-    //            TipoUsuario = 1,
-    //            Senha = _criptografiaHelper.Criptografar("senha123"),
-    //            Endereco = "Rua Teste, 123"
-    //        };
-    //        var usuario2 = new Usuario
-    //        {
-    //            Nome = "User2",
-    //            Email = "user2@email.com",
-    //            DataNascimento = new DateTime(1999, 1, 1),
-    //            TipoUsuario = 2,
-    //            Senha = _criptografiaHelper.Criptografar("senha456"),
-    //            Endereco = "Rua Teste, 456"
-    //        };
+            var result = _usuarioRepoMock.Object.ObterPorID(1);
 
-    //        _repository.Cadastrar(usuario1);
-    //        _repository.Cadastrar(usuario2);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Wilson", result.Nome);
+        }
 
-    //        var usuarios = _repository.ObterTodos();
-    //        Assert.AreEqual(2, usuarios.Count);
-    //        Assert.IsTrue(usuarios.Any(u => u.Nome == "User1"));
-    //        Assert.IsTrue(usuarios.Any(u => u.Nome == "User2"));
-    //    }
+        [TestMethod]
+        public void ObterPorID_ReturnsNullIfNotFound()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPorID(99)).Returns((Usuario)null);
 
-    //    [TestMethod]
-    //    public void GetByIdReturnsCorrectUsuario()
-    //    {
-    //        var usuario = new Usuario
-    //        {
-    //            Nome = "User1",
-    //            Email = "user1@email.com",
-    //            DataNascimento = new DateTime(2000, 1, 1),
-    //            TipoUsuario = 1,
-    //            Senha = _criptografiaHelper.Criptografar("senha123"),
-    //            Endereco = "Rua Teste, 123"
-    //        };
-    //        _repository.Cadastrar(usuario);
+            var result = _usuarioRepoMock.Object.ObterPorID(99);
 
-    //        var created = _repository.ObterTodos().First();
-    //        var found = _repository.ObterPorID(created.Id);
+            Assert.IsNull(result);
+        }
 
-    //        Assert.IsNotNull(found);
-    //        Assert.AreEqual(created.Id, found.Id);
-    //        Assert.AreEqual("User1", found.Nome);
-    //    }
+        [TestMethod]
+        public void ObterPorNome_ReturnsCorrectUsuario()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPorNome("Camila")).Returns(_usuarios[1]);
 
-    //    [TestMethod]
-    //    public void GetByIdReturnsNullIfNotFound()
-    //    {
-    //        var found = _repository.ObterPorID(999);
-    //        Assert.IsNull(found);
-    //    }
+            var result = _usuarioRepoMock.Object.ObterPorNome("Camila");
 
-    //    [TestMethod]
-    //    public void GetByNameReturnsCorrectUsuario()
-    //    {
-    //        var usuario = new Usuario
-    //        {
-    //            Nome = "User1",
-    //            Email = "user1@email.com",
-    //            DataNascimento = new DateTime(2000, 1, 1),
-    //            TipoUsuario = 1,
-    //            Senha = _criptografiaHelper.Criptografar("senha123"),
-    //            Endereco = "Rua Teste, 123"
-    //        };
-    //        _repository.Cadastrar(usuario);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Id);
+        }
 
-    //        var found = _repository.ObterPorNome("User1");
-    //        Assert.IsNotNull(found);
-    //        Assert.AreEqual("User1", found.Nome);
-    //    }
+        [TestMethod]
+        public void ObterPorNome_ReturnsNullIfNotFound()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPorNome("NotFound")).Returns((Usuario)null);
 
-    //    [TestMethod]
-    //    public void GetByNameReturnsNullIfNotFound()
-    //    {
-    //        var found = _repository.ObterPorNome("NotFound");
-    //        Assert.IsNull(found);
-    //    }
+            var result = _usuarioRepoMock.Object.ObterPorNome("NotFound");
 
-    //    [TestMethod]
-    //    public void GetByEmailReturnsCorrectUsuario()
-    //    {
-    //        var usuario = new Usuario
-    //        {
-    //            Nome = "User1",
-    //            Email = "user1@email.com",
-    //            DataNascimento = new DateTime(2000, 1, 1),
-    //            TipoUsuario = 1,
-    //            Senha = _criptografiaHelper.Criptografar("senha123"),
-    //            Endereco = "Rua Teste, 123"
-    //        };
-    //        _repository.Cadastrar(usuario);
+            Assert.IsNull(result);
+        }
 
-    //        var found = _repository.ObterPorEmail("user1@email.com");
-    //        Assert.IsNotNull(found);
-    //        Assert.AreEqual("user1@email.com", found.Email);
-    //    }
+        [TestMethod]
+        public void ObterPorEmail_ReturnsCorrectUsuario()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPorEmail("wilson.carvalhais@gmail.com")).Returns(_usuarios[0]);
 
-    //    [TestMethod]
-    //    public void GetByEmailReturnsNullIfNotFound()
-    //    {
-    //        var found = _repository.ObterPorEmail("notfound@email.com");
-    //        Assert.IsNull(found);
-    //    }
+            var result = _usuarioRepoMock.Object.ObterPorEmail("wilson.carvalhais@gmail.com");
 
-    //    [TestMethod]
-    //    public void UpdateUsuarioUpdatesUsuario()
-    //    {
-    //        var usuario = new Usuario
-    //        {
-    //            Nome = "User1",
-    //            Email = "user1@email.com",
-    //            DataNascimento = new DateTime(2000, 1, 1),
-    //            TipoUsuario = 1,
-    //            Senha = _criptografiaHelper.Criptografar("senha123"),
-    //            Endereco = "Rua Teste, 123"
-    //        };
-    //        _repository.Cadastrar(usuario);
-    //        var created = _repository.ObterTodos().First();
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Wilson", result.Nome);
+        }
 
-    //        created.Nome = "UpdatedUser";
-    //        _repository.Alterar(created);
+        [TestMethod]
+        public void ObterPorEmail_ReturnsNullIfNotFound()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPorEmail("notfound@email.com")).Returns((Usuario)null);
 
-    //        var updated = _repository.ObterPorID(created.Id);
-    //        Assert.IsNotNull(updated);
-    //        Assert.AreEqual("UpdatedUser", updated.Nome);
-    //    }
+            var result = _usuarioRepoMock.Object.ObterPorEmail("notfound@email.com");
 
-    //    [TestMethod]
-    //    public void DeleteUsuarioRemovesUsuario()
-    //    {
-    //        var usuario = new Usuario
-    //        {
-    //            Nome = "User1",
-    //            Email = "user1@email.com",
-    //            DataNascimento = new DateTime(2000, 1, 1),
-    //            TipoUsuario = 1,
-    //            Senha = _criptografiaHelper.Criptografar("senha123"),
-    //            Endereco = "Rua Teste, 123"
-    //        };
-    //        _repository.Cadastrar(usuario);
-    //        var created = _repository.ObterTodos().First();
+            Assert.IsNull(result);
+        }
 
-    //        _repository.Deletar(created.Id);
+        [TestMethod]
+        public void Cadastrar_AddsUsuario()
+        {
+            var newUsuario = new Usuario
+            {
+                Id = 3,
+                Nome = "Lucas",
+                Email = "lucas.silva@example.com",
+                Endereco = "Av. Paulista, São Paulo, SP",
+                Senha = "encrypted",
+                DataNascimento = new DateTime(1988, 7, 23),
+                TipoUsuario = 1,
+                Pedidos = new List<Pedido>()
+            };
 
-    //        var found = _repository.ObterPorID(created.Id);
-    //        Assert.IsNull(found);
-    //    }
-    //}
+            _usuarioRepoMock.Setup(r => r.Cadastrar(newUsuario)).Callback<Usuario>(u => _usuarios.Add(u));
+
+            _usuarioRepoMock.Object.Cadastrar(newUsuario);
+
+            Assert.IsTrue(_usuarios.Any(u => u.Id == 3));
+        }
+
+        [TestMethod]
+        public void Alterar_UpdatesUsuario()
+        {
+            var updatedUsuario = new Usuario
+            {
+                Id = 1,
+                Nome = "Wilson Updated",
+                Email = "wilson.carvalhais@gmail.com",
+                Endereco = "Rua ABC, Rio de Janeiro, RJ",
+                Senha = "encrypted",
+                DataNascimento = new DateTime(1981, 6, 24),
+                TipoUsuario = 1,
+                Pedidos = new List<Pedido>()
+            };
+
+            _usuarioRepoMock.Setup(r => r.Alterar(updatedUsuario)).Callback<Usuario>(u =>
+            {
+                var idx = _usuarios.FindIndex(x => x.Id == u.Id);
+                if (idx >= 0) _usuarios[idx] = u;
+            });
+
+            _usuarioRepoMock.Object.Alterar(updatedUsuario);
+
+            var usuario = _usuarios.FirstOrDefault(u => u.Id == 1);
+            Assert.IsNotNull(usuario);
+            Assert.AreEqual("Wilson Updated", usuario.Nome);
+        }
+
+        [TestMethod]
+        public void Deletar_RemovesUsuario()
+        {
+            _usuarioRepoMock.Setup(r => r.Deletar(2)).Callback<int>(id =>
+            {
+                var usuario = _usuarios.FirstOrDefault(u => u.Id == id);
+                if (usuario != null) _usuarios.Remove(usuario);
+            });
+
+            _usuarioRepoMock.Object.Deletar(2);
+
+            Assert.IsFalse(_usuarios.Any(u => u.Id == 2));
+        }
+
+        [TestMethod]
+        public void CadastrarEmMassa_CallsMethod()
+        {
+            var called = false;
+            _usuarioRepoMock.Setup(r => r.CadastrarEmMassa()).Callback(() => called = true);
+
+            _usuarioRepoMock.Object.CadastrarEmMassa();
+
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        public void ObterPedidosTodos_ReturnsUsuarioDto()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPedidosTodos(1)).Returns(_usuarioDtoSample);
+
+            var result = _usuarioRepoMock.Object.ObterPedidosTodos(1);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Id);
+            Assert.AreEqual("Wilson", result.Nome);
+        }
+
+        [TestMethod]
+        public void ObterPedidosSeisMeses_ReturnsUsuarioDto()
+        {
+            _usuarioRepoMock.Setup(r => r.ObterPedidosSeisMeses(1)).Returns(_usuarioDtoSample);
+
+            var result = _usuarioRepoMock.Object.ObterPedidosSeisMeses(1);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Id);
+            Assert.AreEqual("Wilson", result.Nome);
+        }
+    }
 }
